@@ -425,7 +425,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "usb_powered.kicad_pro",
+    "filename": "clock_sync_16.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -530,6 +530,14 @@
     [
       "ba147b73-594a-4106-8069-105093132ec6",
       "Harp Core RP2040 + USB"
+    ],
+    [
+      "6e9d1cca-f003-4b5c-8a26-4c1fa4bf016d",
+      "Clock Outputs 0 - 7"
+    ],
+    [
+      "278a537f-0e98-4c6a-aa92-022081418535",
+      "Clock Outputs 8 - 16"
     ]
   ],
   "text_variables": {}
