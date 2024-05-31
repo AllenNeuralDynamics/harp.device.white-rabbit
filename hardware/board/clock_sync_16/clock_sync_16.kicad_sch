@@ -322,6 +322,11 @@
     (uuid fcd1f6da-495b-47ff-bbad-e58bf3ba0874)
   )
 
+  (text "Buffer Bypass Cap" (at 133.35 173.355 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 821b7fa4-fba1-4fa3-b07a-c132842b2761)
+  )
+
   (global_label "HARP_CLKOUT" (shape input) (at 156.845 48.26 0) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify left))
     (uuid ae784313-5809-4dc9-acb0-ef249da80536)
