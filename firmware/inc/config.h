@@ -3,10 +3,22 @@
 
 
 #define UART_TX_PIN (0)
-#define HARP_SYNC_RX_PIN (5)
 #define HARP_CORE_LED_PIN (25)
 
-#define HARP_DEVICE_ID (0x0578)
+#define HARP_DEVICE_ID (1404)
+
+#define HARP_UART (uart1)
+#define HARP_SYNC_BAUDRATE (100000UL)
+#define HARP_CLKOUT_PIN (4)
+#define HARP_CLKIN_PIN (5)
+#define HARP_SYNC_START_OFFSET_US (-572)
+
+#define SLOW_SYNC_UART (uart0)
+#define SLOW_SYNC_BAUDRATE (1000UL)
+#define SLOW_SYNC_CLKOUT_PIN (0)
+
+#define LED_PIN (25)
+
 
 // Doesnt work yet:
 //#define USBD_MANUFACTURER "The Allen Institute for Neural Dynamics"
