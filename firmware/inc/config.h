@@ -8,10 +8,13 @@
 #define HARP_DEVICE_ID (1404)
 
 #define HARP_UART (uart1)
+// Baud rate and offset defined per spec.
+// https://harp-tech.org/protocol/SynchronizationClock.html
 #define HARP_SYNC_BAUDRATE (100000UL)
 #define HARP_CLKOUT_PIN (4)
 #define HARP_CLKIN_PIN (5)
-#define HARP_SYNC_START_OFFSET_US (-572)
+#define HARP_SYNC_START_OFFSET_US (-572) // Offset from spec to account for
+                                         // transmission time.
 
 #define SLOW_SYNC_UART (uart0)
 #define SLOW_SYNC_BAUDRATE (1000UL)

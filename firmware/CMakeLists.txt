@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.13)
 
-#add_definitions(-DDEBUG) # Uncomment for debugging
+add_definitions(-DDEBUG) # Uncomment for debugging
+
+#set(GIT_HASH, "\"$(shell git rev-parse HEAD)\"")
+#set(GIT_HASH, "\"$(printf "[%s, %s, %s, %s, %s, %s, %s]" `git rev-parse --short HEAD | sed  's/\\(.\\)/\\1 /g'`)\"")
+#add_compile_definitions(GIT_HASH="${GIT_HASH}")
+#message(WARNING "Computed Git Hash: ${GIT_HASH}")
 
 # PICO_SDK_PATH must be defined.
 include(${PICO_SDK_PATH}/pico_sdk_init.cmake)
