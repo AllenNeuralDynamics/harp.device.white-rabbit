@@ -1944,6 +1944,12 @@
     (uuid ffd4a3ec-ca52-4314-b35e-738cb004c92a)
   )
 
+  (text "FIXME: R4 should\nbe 1600KOhm to\nhandle 3.3V & 5V\noptions."
+    (at 125.73 42.545 0)
+    (effects (font (size 2 2) (thickness 0.4) bold) (justify left bottom))
+    (uuid 861704ac-0742-48d9-9329-a41ce7f9d44c)
+  )
+
   (global_label "HARP_CLKOUT" (shape input) (at 202.565 107.95 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 1b79d5d8-0c2d-4682-b7a1-94579e2d91bc)

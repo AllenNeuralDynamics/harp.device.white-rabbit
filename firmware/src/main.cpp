@@ -33,10 +33,11 @@ volatile uint harp_clkout_dma_chan;
 volatile uint slow_clkout_dma_chan;
 
 // Double-buffered outgoing msg buffer.
-volatile uint8_t harp_time_msg [2][6] = {{0xAA, 0xAF, 0, 0, 0, 0},
-                                         {0xAA, 0xAF, 0, 0, 0, 0}};
-volatile uint8_t (*dispatch_buffer)[6];
-volatile uint8_t (*load_buffer)[6];
+volatile uint8_t harp_time_msg_a[6] = {0xAA, 0xAF, 0, 0, 0, 0};
+volatile uint8_t harp_time_msg_b[6] = {0xAA, 0xAF, 0, 0, 0, 0};
+
+volatile uint8_t *dispatch_buffer;
+volatile uint8_t *load_buffer;
 
 /**
  * \brief nonblocking way to dispatch uart characters.
@@ -76,12 +77,8 @@ void __not_in_flash_func(dispatch_uart_stream)(uint dma_chan, uart_inst_t* uart,
  */
 void __not_in_flash_func(dispatch_harp_clkout)()
 {
-#if defined(DEBUG)
-    printf("entered interrupt!\r\n");
-#endif
     // Dispatch the previously-configured time.
-    dispatch_uart_stream(harp_clkout_dma_chan, HARP_UART,
-                         (uint8_t*)&dispatch_buffer, 4);
+    dispatch_uart_stream(harp_clkout_dma_chan, HARP_UART, (uint8_t*)dispatch_buffer, 6);
     // Clear the latched hardware interrupt.
     timer_hw->intr |= (1u << harp_clkout_alarm_num);
 
@@ -89,6 +86,11 @@ void __not_in_flash_func(dispatch_harp_clkout)()
     // elapse of the next whole second when we are supposed to emit the msg.
     uint32_t curr_harp_seconds = HarpCore::harp_time_s();
     uint32_t next_msg_harp_time_us_32 = (curr_harp_seconds * 1000000UL) + 2'000'000UL;
+#if defined(DEBUG)
+    printf("Sending: %x %x %x %x %x %x\r\n", dispatch_buffer[0],
+           dispatch_buffer[1], dispatch_buffer[2], dispatch_buffer[3],
+           dispatch_buffer[4], dispatch_buffer[5]);
+#endif
     // Offset such that the start of last byte occurs on the whole second per:
     // https://harp-tech.org/protocol/SynchronizationClock.html#serial-configuration
     // Offset such that the start of last byte occurs on the whole second per:
@@ -172,7 +174,7 @@ int main()
     gpio_set_function(HARP_CLKOUT_PIN, GPIO_FUNC_UART);
 // If we enable debug msgs, we cannot use the slow output.
 #if defined(DEBUG)
-    stdio_uart_init_full(SLOW_SYNC_UART, 921600, UART_TX_PIN, -1); // TX only.
+    stdio_uart_init_full(SLOW_SYNC_UART, 921600, SLOW_SYNC_CLKOUT_PIN, -1); // TX only.
     printf("Hello, from an RP2040!\r\n");
 #else
     // Setup UART TX for periodic transmission of time at 1KBaud.
@@ -184,8 +186,8 @@ int main()
     gpio_set_function(SLOW_SYNC_CLKOUT_PIN, GPIO_FUNC_UART);
 #endif
     // Setup Outgoing msg double buffer;
-    dispatch_buffer = (&harp_time_msg[0]);
-    load_buffer = (&harp_time_msg[1]);
+    dispatch_buffer = &(harp_time_msg_a[0]);
+    load_buffer = &(harp_time_msg_b[0]);
     // Setup Harp CLKOUT periodic outgoing time message.
     // Leverage RP2040 ALARMs to dispatch periodically via interrupt handler.
     harp_clkout_alarm_num = hardware_alarm_claim_unused(true); // true --> required

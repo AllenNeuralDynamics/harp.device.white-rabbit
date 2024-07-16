@@ -13,7 +13,7 @@ include(${PICO_SDK_PATH}/pico_sdk_init.cmake)
 # Use modern conventions like std::invoke
 set(CMAKE_CXX_STANDARD 17)
 
-project(harp_c_app_example)
+project(white_rabbit)
 
 pico_sdk_init()
 add_subdirectory(lib/harp.core.rp2040/firmware) # Path to harp.core.rp2040.
