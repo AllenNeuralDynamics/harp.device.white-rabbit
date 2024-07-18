@@ -1,4 +1,3 @@
-#include <cstring>
 #include <harp_synchronizer.h>
 #include <harp_core.h>
 #include <harp_c_app.h>
@@ -7,7 +6,10 @@
 #include <config.h>
 #include <hardware/dma.h>
 #include <hardware/timer.h>
+#include <uart_nonblocking.h>
+#include <white_rabbit_app.h>
 #include <utility>
+#include <cstring>
 
 // Harp App Setup.
 const uint16_t who_am_i = HARP_DEVICE_ID;
@@ -20,7 +22,6 @@ const uint8_t fw_version_major = 0;
 const uint8_t fw_version_minor = 0;
 const uint16_t serial_number = 0;
 
-const uint8_t reg_count = 0;
 
 // Alarm number used to trigger dispatch of periodic time msg.
 int32_t harp_clkout_alarm_num = -1;
@@ -39,41 +40,11 @@ volatile uint8_t harp_time_msg_b[6] = {0xAA, 0xAF, 0, 0, 0, 0};
 volatile uint8_t *dispatch_buffer;
 volatile uint8_t *load_buffer;
 
-/**
- * \brief nonblocking way to dispatch uart characters.
- * \details assumes a global DMA channel has already been assigned.
- */
-void __not_in_flash_func(dispatch_uart_stream)(uint dma_chan, uart_inst_t* uart,
-                         uint8_t* starting_address, size_t word_count)
-{
-    // DMA channel will write data to the uart, paced by DREQ_TX.
-    dma_channel_config conf = dma_channel_get_default_config(dma_chan);
-
-    // Setup Sample Channel.
-    channel_config_set_transfer_data_size(&conf, DMA_SIZE_8);
-    channel_config_set_read_increment(&conf, true); // read from starting memory address.
-    channel_config_set_write_increment(&conf, false); // write to fixed uart memorey address.
-    channel_config_set_irq_quiet(&conf, true);
-    // Pace data according to pio providing data.
-    uint uart_dreq = (uart == uart0)? DREQ_UART0_TX : DREQ_UART1_TX;
-    channel_config_set_dreq(&conf, uart_dreq);
-    channel_config_set_enable(&conf, true);
-    // Apply samp_chan_ configuration.
-    dma_channel_configure(
-        dma_chan,               // Channel to be configured
-        &conf,                  // corresponding DMA config.
-        &uart_get_hw(uart)->dr, // write (dst) address.
-        starting_address,       // read (source) address.
-        word_count,             // Number of word transfers i.e: len(string).
-        true                    // Do start immediately.
-    );
-}
-
 //inline void disable_led() {gpio_put(LED_PIN, 0);}
 
 /**
  * \brief Dispatch the time to 16x outputs.
- * \warning called inside of interrupt. Do not block.
+ * \warning called inside of interrupt. Does not block.
  */
 void __not_in_flash_func(dispatch_harp_clkout)()
 {
@@ -116,32 +87,6 @@ void __not_in_flash_func(dispatch_slow_sync_clkout)()
 //    dispatch_uart_stream(SLOW_SYNC_UART, (uint8_t*)&dispatch_buffer, 4);
 }
 
-// Define Harp App registers.
-struct app_regs_t
-{
-// No regs yet.
-} app_regs;
-
-// Define "specs" per register.
-RegSpecs app_reg_specs[reg_count]
-{
-};
-
-// Define read/write reg handler functions.
-RegFnPair reg_handler_fns[reg_count]
-{
-
-};
-
-void update_app_state()
-{
-}
-
-void reset_app()
-{
-// no reg handler funcs yet.
-}
-
 // Create Harp App.
 HarpCApp& app = HarpCApp::init(who_am_i, hw_version_major, hw_version_minor,
                                assembly_version,
@@ -149,7 +94,7 @@ HarpCApp& app = HarpCApp::init(who_am_i, hw_version_major, hw_version_minor,
                                fw_version_major, fw_version_minor,
                                serial_number, "White Rabbit",
                                &app_regs, app_reg_specs,
-                               reg_handler_fns, reg_count, update_app_state,
+                               reg_handler_fns, REG_COUNT, update_app_state,
                                reset_app);
 
 // Core0 main.
@@ -236,3 +181,4 @@ int main()
     while(true)
         app.run();
 }
+

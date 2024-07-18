@@ -16,6 +16,8 @@
 #define HARP_SYNC_START_OFFSET_US (-572) // Offset from spec to account for
                                          // transmission time.
 
+#define MAX_EVENT_FREQUENCY_HZ (1000)
+
 #define SLOW_SYNC_UART (uart0)
 #define SLOW_SYNC_BAUDRATE (1000UL)
 #define SLOW_SYNC_CLKOUT_PIN (0)

@@ -18,14 +18,27 @@ project(white_rabbit)
 pico_sdk_init()
 add_subdirectory(lib/harp.core.rp2040/firmware) # Path to harp.core.rp2040.
 
+add_library(uart_nonblocking
+    src/uart_nonblocking.cpp
+)
+
+add_library(white_rabbit_app
+    src/white_rabbit_app.cpp
+)
+
 add_executable(${PROJECT_NAME}
     src/main.cpp
 )
 
 include_directories(inc)
 
+target_link_libraries(uart_nonblocking hardware_dma hardware_timer pico_stdlib)
+target_link_libraries(white_rabbit_app harp_core harp_c_app harp_sync
+                      hardware_divider pico_stdlib)
+
 target_link_libraries(${PROJECT_NAME} harp_core harp_c_app harp_sync pico_stdlib
-                      hardware_dma hardware_timer)
+                      hardware_dma hardware_timer uart_nonblocking
+                      white_rabbit_app)
 
 pico_add_extra_outputs(${PROJECT_NAME})
 
