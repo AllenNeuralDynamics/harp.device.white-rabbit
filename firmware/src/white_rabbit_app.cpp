@@ -33,8 +33,9 @@ void update_app_state()
     // Update the state of ConnectedDevices.
     uint16_t old_port_raw = app_regs.ConnectedDevices;
     uint32_t port_raw = gpio_get_all();
+    // CHAN[7:0] = GPIO[23:16]; CHAN[8:15] = GPIO[15:8]. See schematic.
     port_raw >>= 8;
-    port_raw = (((port_raw & 0x000000FF) << 8) | (port_raw >> 8)) && 0x0000FFFF;
+    port_raw = ((port_raw & 0x000000FF) << 8) | ((port_raw & 0x0000FF00) >> 8);
     app_regs.ConnectedDevices = uint16_t(port_raw);
     // If port state changed, dispatch event from ConnectedDevices app reg (32).
     // TODO: add hysteresis.
