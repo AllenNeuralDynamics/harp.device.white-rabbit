@@ -9,16 +9,11 @@
 #include <harp_c_app.h>
 #include <harp_synchronizer.h>
 #include <core_registers.h>
-#include <pico/divider.h> // for fast hardware division: b/a=div_u32u32(b, a)
+#include <pico/divider.h> // for fast hardware division.
 #ifdef DEBUG
     #include <stdio.h>
     #include <cstdio> // for printf
 #endif
-//#include <hardware/dma.h>
-//#include <hardware/timer.h>
-//#include <uart_nonblocking.h>
-//#include <utility>
-//#include <cstring>
 
 
 // Create device name.

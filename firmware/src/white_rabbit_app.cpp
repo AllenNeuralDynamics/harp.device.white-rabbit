@@ -30,11 +30,21 @@ void write_counter_frequency_hz(msg_t& msg)
 
 void update_app_state()
 {
+    // Update the state of ConnectedDevices.
+    uint16_t old_port_raw = app_regs.ConnectedDevices;
+    uint32_t port_raw = gpio_get_all();
+    port_raw >>= 8;
+    port_raw = (((port_raw & 0x000000FF) << 8) | (port_raw >> 8)) && 0x0000FFFF;
+    app_regs.ConnectedDevices = uint16_t(port_raw);
+    // If port state changed, dispatch event from ConnectedDevices app reg (32).
+    // TODO: add hysteresis.
+    if ((old_port_raw != app_regs.ConnectedDevices) && !HarpCore::is_muted())
+        HarpCore::send_harp_reply(EVENT, APP_REG_START_ADDRESS);
+
     // Nothing to do if we're not instructed to emit periodic msgs.
     if (app_regs.CounterFrequencyHz == 0)
         return;
     uint32_t curr_time_us = HarpCore::harp_time_us_32();
-
     // Handle edge-case where we went from not-synced to synced.
     if (HarpSynchronizer::has_synced() && !was_synced)
     {
