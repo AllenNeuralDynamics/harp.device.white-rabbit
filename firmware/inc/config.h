@@ -21,6 +21,8 @@
 #define SLOW_SYNC_UART (uart0)
 #define SLOW_SYNC_BAUDRATE (1000UL)
 #define SLOW_SYNC_CLKOUT_PIN (0)
+#define SLOW_SYNC_START_OFFSET_US (0) // Offset from spec to account for
+                                      // transmission time.
 
 #define LED_PIN (25)
 
