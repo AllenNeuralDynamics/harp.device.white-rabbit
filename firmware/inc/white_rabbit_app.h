@@ -45,8 +45,9 @@ struct app_regs_t
                                          // channel.
     volatile uint32_t Counter;
     volatile uint16_t CounterFrequencyHz;
-    volatile uint8_t AuxPortFn; // bit[0] = 1 --> slow uart
-                                // bit[1] = 1 --> PPS
+    volatile uint8_t AuxPortFn; // 0 --> no behavior (reset behavior).
+                                // 1 --> output slow uart containing the time.
+                                // 2 --> output PPS signal.
     // More app "registers" here.
 };
 #pragma pack(pop)

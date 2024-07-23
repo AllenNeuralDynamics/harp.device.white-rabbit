@@ -77,8 +77,8 @@ RegSpecs app_reg_specs[REG_COUNT]
 {
     {(uint8_t*)&app_regs.ConnectedDevices, sizeof(app_regs.ConnectedDevices), U16}, // 32
     {(uint8_t*)&app_regs.Counter, sizeof(app_regs.Counter), U32}, // 33
-    {(uint8_t*)&app_regs.CounterFrequencyHz, sizeof(app_regs.CounterFrequencyHz), U32}, // 34
-    {(uint8_t*)&app_regs.AuxPortFn, sizeof(app_regs.AuxPortFn), U32}, // 34
+    {(uint8_t*)&app_regs.CounterFrequencyHz, sizeof(app_regs.CounterFrequencyHz), U16}, // 34
+    {(uint8_t*)&app_regs.AuxPortFn, sizeof(app_regs.AuxPortFn), U8}, // 35
     // More specs here if we add additional registers.
 };
 
