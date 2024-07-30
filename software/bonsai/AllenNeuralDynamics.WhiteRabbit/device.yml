@@ -1,0 +1,62 @@
+%YAML 1.1
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/harp-tech/reflex-generator/main/schema/device.json
+device: WhiteRabbit
+whoAmI: 1404
+firmwareVersion: "0.0"
+hardwareTargets: "0.0"
+registers:
+  ConnectedDevices:
+    address: 32
+    type: U16
+    access: Event
+    maskType: ClockOutChannels
+    description: "The currently connected output channels. An event will be generated when any of the channels are connected or disconnected."
+  Counter:
+    address: 33
+    type: U32
+    access: [Write, Event]
+    description: "The counter value. This value is incremented at the frequency specified by CounterFrequencyHz. Write to force a counter value."
+  CounterFrequencyHz:
+    address: 34
+    type: U16
+    access: Write
+    maxValue: 500
+    defaultValue: 0
+    minValue: 0
+    description: "The frequency at which the counter is incremented. A value of 0 disables the counter."
+  AuxPortMode:
+    address: 35
+    type: U8
+    access: Write
+    description: "The function of the auxiliary port."
+    maskType: AuxPortModeConfig
+
+bitMasks:
+  ClockOutChannels:
+    description: "Clock output channels"
+    bits:
+      None: 0x00
+      Channel0: 0x01
+      Channel1: 0x02
+      Channel2: 0x04
+      Channel3: 0x08
+      Channel4: 0x10
+      Channel5: 0x20
+      Channel6: 0x40
+      Channel7: 0x80
+      Channel8: 0x100
+      Channel9: 0x200
+      Channel10: 0x400
+      Channel11: 0x800
+      Channel12: 0x1000
+      Channel13: 0x2000
+      Channel14: 0x4000
+      Channel15: 0x8000
+groupMasks:
+  AuxPortModeConfig:
+    description: "Auxiliary port available configuration"
+    values:
+      Disabled: 0x0
+      HarpClock: 0x1
+      PPS: 0x2
