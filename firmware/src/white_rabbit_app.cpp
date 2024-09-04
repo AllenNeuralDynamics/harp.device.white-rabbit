@@ -53,9 +53,14 @@ void setup_harp_clkout()
     load_buffer = &(harp_time_msg_b[0]);
     // Setup Harp CLKOUT periodic outgoing time message.
     // Leverage RP2040 ALARMs to dispatch periodically via interrupt handler.
+    // Tell Pico-SDK that we are using this alarm.
     harp_clkout_alarm_num = hardware_alarm_claim_unused(true); // true --> required
     // TODO: harp_clkout_irq_number = TIMER_IRQ_NUM(timer_hw, harp_clkout_alarm_num);
     harp_clkout_irq_number = TIMER_IRQ_0 + harp_clkout_alarm_num;
+#if defined(DEBUG)
+    printf("harp clkout alarm num: %d | irq num: %d\r\n", harp_clkout_alarm_num,
+           harp_clkout_irq_number);
+#endif
     // Attach interrupt to function and enable alarm to generate interrupt.
     irq_set_exclusive_handler(harp_clkout_irq_number,
                               dispatch_and_reschedule_harp_clkout);
@@ -81,7 +86,7 @@ void __not_in_flash_func(dispatch_and_reschedule_harp_clkout)()
     // Dispatch the previously-configured time.
     dispatch_uart_stream(harp_clkout_dma_chan, HARP_UART, (uint8_t*)dispatch_buffer, 6);
     // Clear the latched hardware interrupt.
-    timer_hw->intr |= (1u << harp_clkout_alarm_num);
+    timer_hw->intr = (1u << harp_clkout_alarm_num);
     // Get the next whole harp time second. +2 bc we wake up *before* the
     // elapse of the next whole second when we are supposed to emit the msg.
     uint32_t curr_harp_seconds = HarpCore::harp_time_s();
@@ -99,7 +104,6 @@ void __not_in_flash_func(dispatch_and_reschedule_harp_clkout)()
            sizeof(curr_harp_seconds));
     // Toggle ping-pong buffers.
     std::swap(load_buffer, dispatch_buffer);
-    gpio_put(LED_PIN, !gpio_get(LED_PIN)); // toggle LED.
     // Schedule next time msg dispatch in system time.
     // Low-level interface (fast!) to re-schedule this function.
     uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us_32);
@@ -121,13 +125,14 @@ void setup_slow_clkout()
     uart_set_hw_flow(slow_uart_id, false, false);
     uart_set_fifo_enabled(slow_uart_id, false); // Set FIFO size to 1.
     uart_set_format(slow_uart_id, 8, 1, UART_PARITY_NONE);
-    gpio_set_function(SLOW_SYNC_CLKOUT_PIN, GPIO_FUNC_UART);
+    gpio_set_function(AUX_PIN, GPIO_FUNC_UART);
     // Setup SLOW CLKOUT periodic outgoing time message.
     // Setup Outgoing msg double buffer;
     dispatch_second = &slow_clkout_seconds_a;
     load_second = &slow_clkout_seconds_b;
     // Setup SLOW CLKOUT periodic outgoing time message.
     // Leverage RP2040 ALARMs to dispatch periodically via interrupt handler.
+    // Tell Pico-SDK that we are using this alarm.
     slow_clkout_alarm_num = hardware_alarm_claim_unused(true); // true --> required
     slow_clkout_irq_number = TIMER_IRQ_0 + slow_clkout_alarm_num; // TIMER_IRQ_NUM(TIMER_IRQ_0, slow_clkout_alarm_num);
     // Attach interrupt to function and enable alarm to generate interrupt.
@@ -155,7 +160,7 @@ void __not_in_flash_func(dispatch_and_reschedule_slow_clkout)()
     dispatch_uart_stream(slow_clkout_dma_chan, SLOW_SYNC_UART,
                          (uint8_t*)dispatch_second, sizeof(dispatch_second));
     // Clear the latched hardware interrupt.
-    timer_hw->intr |= (1u << slow_clkout_alarm_num);
+    timer_hw->intr = (1u << slow_clkout_alarm_num);
     // Get the next whole harp time second.
     uint32_t curr_harp_seconds = HarpCore::harp_time_s();
     uint32_t next_msg_harp_time_us_32 = (curr_harp_seconds * 1000000UL) + 1'000'000UL;
@@ -182,32 +187,49 @@ void __not_in_flash_func(dispatch_and_reschedule_slow_clkout)()
 
 void cleanup_slow_clkout()
 {
-    // Disarm alarm.
-    timer_hw->armed |= (1u << slow_clkout_alarm_num);
+    // Disarm alarm by writing 1 to the corresponding alarm.
+    timer_hw->armed = (1u << slow_clkout_alarm_num);
     // Clear the latched hardware interrupt (if latched).
-    timer_hw->intr |= (1u << slow_clkout_alarm_num);
-    // Unreserve Alarm and IRQ.
-    hardware_alarm_unclaim(slow_clkout_alarm_num);
-    irq_remove_handler(slow_clkout_irq_number,
-                       dispatch_and_reschedule_slow_clkout);
-    gpio_deinit(SLOW_SYNC_CLKOUT_PIN);
+    timer_hw->intr = (1u << slow_clkout_alarm_num);
+    // Disable alarm to trigger interrupt.
+    timer_hw->inte &= ~(1u << slow_clkout_alarm_num);
+    // Unreserve Alarm and IRQ if it was not yet claimed.
+    if (slow_clkout_alarm_num >= 0)
+    {
+        hardware_alarm_unclaim(slow_clkout_alarm_num);
+        slow_clkout_alarm_num = -1;
+        irq_set_enabled(slow_clkout_irq_number, false);
+        irq_remove_handler(slow_clkout_irq_number,
+                           dispatch_and_reschedule_slow_clkout);
+    }
+    gpio_deinit(AUX_PIN);
 }
 
 void setup_pps_output()
 {
     // Setup GPIO pins.
-    gpio_init(SLOW_SYNC_CLKOUT_PIN); // shared with PPS.
-    gpio_set_dir(SLOW_SYNC_CLKOUT_PIN, GPIO_OUT);
-    gpio_put(SLOW_SYNC_CLKOUT_PIN, 0);
+    gpio_init(LED0_PIN);
+    gpio_set_dir(LED0_PIN, GPIO_OUT);
+    gpio_put(LED0_PIN, 0);
+#if !defined(DEBUG)
+    gpio_init(AUX_PIN); // shared with PPS.
+    gpio_set_dir(AUX_PIN, GPIO_OUT);
+    gpio_put(AUX_PIN, 0);
+#endif
     // Setup Harp CLKOUT periodic outgoing time message.
     // Leverage RP2040 ALARMs to dispatch periodically via interrupt handler.
+    // Tell Pico-SDK that we are using this alarm.
     pps_output_alarm_num = hardware_alarm_claim_unused(true); // true --> required
     // TODO: pps_output_irq_number = TIMER_IRQ_NUM(timer_hw, harp_clkout_alarm_num);
-    pps_output_irq_number = TIMER_IRQ_0 + harp_clkout_alarm_num;
+    pps_output_irq_number = TIMER_IRQ_0 + pps_output_alarm_num;
+#if defined(DEBUG)
+    printf("PPS output alarm num: %d | irq num: %d\r\n", pps_output_alarm_num,
+           pps_output_irq_number);
+#endif
     // Attach interrupt to function and enable alarm to generate interrupt.
     irq_set_exclusive_handler(pps_output_irq_number, update_pps_output);
     irq_set_enabled(pps_output_irq_number, true);
-    // Compute start time for Slow CLKOUT msg.
+    // Compute start time for PPS Output (next whole second).
     // Get the next whole second.
     uint32_t curr_harp_seconds = HarpCore::harp_time_s();
     uint32_t next_msg_harp_time_us_32 = (curr_harp_seconds * 1000000UL) + 1'000'000UL;
@@ -222,11 +244,20 @@ void setup_pps_output()
 
 void update_pps_output()
 {
-    gpio_xor_mask(1 << SLOW_SYNC_CLKOUT_PIN); // Toggle GPIO Pin.
+    // Toggle GPIO Pins.
+#if defined(DEBUG)
+    // Only toggle LED pin if DEBUG port is used for debug UART.
+    gpio_xor_mask(1u << LED0_PIN);
+#else
+    gpio_xor_mask((1u << AUX_PIN) | (1u << LED0_PIN));
+#endif
+    // Clear the latched hardware interrupt.
+    timer_hw->intr = (1u << pps_output_alarm_num);
     // Schedule next update.
     // Get the next whole harp time **half**-second.
-    uint32_t curr_harp_us = HarpCore::harp_time_us_32();
-    uint32_t next_msg_harp_time_us_32 = curr_harp_us + 500'000UL;
+    // Round down. i.e: integer-divide into half-second multiples and add 0.5s.
+    uint32_t next_msg_harp_time_us_32 =
+        (uint32_t(HarpCore::harp_time_us_32() / 500'000UL) * 500'000UL) + 500'000UL;
     // Schedule next time msg dispatch in system time.
     // Low-level interface (fast!) to re-schedule this function.
     uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us_32);
@@ -238,14 +269,24 @@ void update_pps_output()
 
 void cleanup_pps_output()
 {
-    // Disarm alarm.
-    timer_hw->armed |= (1u << pps_output_alarm_num);
+    // Disarm alarm by writing 1 to the corresponding alarm.
+    timer_hw->armed = (1u << pps_output_alarm_num);
     // Clear the latched hardware interrupt (if latched).
-    timer_hw->intr |= (1u << pps_output_alarm_num);
+    timer_hw->intr = (1u << pps_output_alarm_num);
+    // Disable alarm to trigger interrupt.
+    timer_hw->inte &= ~(1u << pps_output_alarm_num);
     // Unreserve Alarm and IRQ.
-    hardware_alarm_unclaim(pps_output_alarm_num);
-    irq_remove_handler(pps_output_irq_number, update_pps_output);
-    gpio_deinit(SLOW_SYNC_CLKOUT_PIN); // shared with PPS.
+    if (pps_output_alarm_num >= 0)
+    {
+        hardware_alarm_unclaim(pps_output_alarm_num);
+        irq_set_enabled(pps_output_irq_number, false);
+        irq_remove_handler(pps_output_irq_number, update_pps_output);
+        pps_output_alarm_num = -1;
+    }
+#if !defined(DEBUG)
+    gpio_deinit(AUX_PIN); // shared with PPS.
+#endif
+    gpio_deinit(LED0_PIN); // shared with PPS.
 }
 
 void write_counter_frequency_hz(msg_t& msg)
@@ -273,23 +314,33 @@ void write_aux_port_fn(msg_t& msg)
 {
     uint8_t old_aux_fn = app_regs.AuxPortFn;
     HarpCore::copy_msg_payload_to_register(msg);
+    // Only 0, 1, and 2 are valid options.
     if (app_regs.AuxPortFn > 2)
     {
         if (!HarpCore::is_muted())
             HarpCore::send_harp_reply(WRITE_ERROR, msg.header.address);
         app_regs.AuxPortFn = old_aux_fn; // Restore original setting.
+        return; // Bail early.
+    }
+    // Nothing new to do!
+    if (app_regs.AuxPortFn == old_aux_fn)
+    {
+        if (!HarpCore::is_muted())
+            HarpCore::send_harp_reply(WRITE, msg.header.address);
         return;
     }
-    reset_aux_fn();
+    reset_aux_fn(); // Always do this before reconfiguring.
     switch (app_regs.AuxPortFn)
     {
         case 0: // Clear behaviors.
             break;
         case 1: // Slow CLKout.
+#if !defined(DEBUG)
             setup_slow_clkout();
+#endif
             break;
         case 2: // PPS Ouput.
-            setup_slow_clkout();
+            setup_pps_output();
             break;
     }
     if (!HarpCore::is_muted())
@@ -334,7 +385,9 @@ void update_app_state()
 void reset_aux_fn()
 {
     cleanup_pps_output();
+#if !defined(DEBUG)
     cleanup_slow_clkout(); // Cleanup lingering SLOW CLKout behavior.
+#endif
 }
 
 void reset_app()
@@ -342,11 +395,16 @@ void reset_app()
     counter_interval_us = 0;
     app_regs.Counter = 0;
     app_regs.CounterFrequencyHz = 0;
+#if defined(DEBUG)
+    app_regs.AuxPortFn = 0; // Disable SLOW CLKout.
+#else
     app_regs.AuxPortFn = 1; // Start with SLOW CLKout fn enabled.
-    // Note: external sync state does not change.
+#endif
     reset_aux_fn();
-    setup_harp_clkout();
+#if !defined(DEBUG)
     setup_slow_clkout(); // Start with SLOW CLKout fn enabled.
+#endif
+    setup_harp_clkout();
 }
 
 // Define "specs" per-register

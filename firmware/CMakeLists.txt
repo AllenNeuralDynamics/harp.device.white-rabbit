@@ -13,8 +13,9 @@ include(${PICO_SDK_PATH}/pico_sdk_init.cmake)
 
 # Use modern conventions like std::invoke
 set(CMAKE_CXX_STANDARD 17)
+# Enable try/catch exception interface.
+#set(PICO_CXX_ENABLE_EXCEPTIONS 1)
 
-#project(white_rabbit)
 project(white_rabbit)
 
 pico_sdk_init()
