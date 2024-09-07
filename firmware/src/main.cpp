@@ -28,6 +28,10 @@ int main()
     stdio_uart_init_full(SLOW_SYNC_UART, 921600, AUX_PIN, -1); // TX only.
     printf("Hello, from an RP2040!\r\n");
 #endif
+    // Init Synchronizer. Do this first since the WhiteRabbit app will attempt
+    // to initialize the same hardware (HARP_UART) and skip if already
+    // initialized.
+    HarpSynchronizer& sync = HarpSynchronizer::init(HARP_UART, HARP_CLKIN_PIN);
     // Create Harp App.
     HarpCApp& app = HarpCApp::init(who_am_i, hw_version_major, hw_version_minor,
                                    assembly_version,
@@ -38,9 +42,8 @@ int main()
                                    &app_regs, app_reg_specs,
                                    reg_handler_fns, REG_COUNT, update_app_state,
                                    reset_app);
-    // Init Synchronizer.
-    HarpSynchronizer& sync = HarpSynchronizer::init(HARP_UART, HARP_CLKIN_PIN);
     app.set_synchronizer(&sync);
+    // TODO: try waiting until synchronized.
     // If we enable debug msgs, we cannot use the slow output.
     reset_app();
     while(true)

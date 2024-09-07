@@ -23,13 +23,13 @@ if os.name == 'posix': # check for Linux.
 else: # assume Windows.
     device = Device("COM95", "ibl.bin")
 start_time = perf_counter()
-# Enable sensor message events at 1 Hz
+# Enable PPS
 print("Enabling PPS. Press CTRL-C to exit.")
-reply = device.send(HarpMessage.WriteU16(Regs.AuxPortFn.value, 0b10).frame)
+reply = device.send(HarpMessage.WriteU8(Regs.AuxPortFn.value, 0x02).frame)
 try:
     while True:
         pass
 except KeyboardInterrupt:
     print("Disabling slow Uart.")
-    reply = device.send(HarpMessage.WriteU16(Regs.AuxPortFn.value, 0).frame)
+    reply = device.send(HarpMessage.WriteU8(Regs.AuxPortFn.value, 0).frame)
     device.disconnect()

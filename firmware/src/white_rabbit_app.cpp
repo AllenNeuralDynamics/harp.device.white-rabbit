@@ -43,7 +43,10 @@ void setup_harp_clkout()
     harp_clkout_dma_chan = dma_claim_unused_channel(true);
     // Setup UART TX for periodic transmission of the time at 100KBaud.
     uart_inst_t* uart_id = HARP_UART;
-    uart_init(uart_id, HARP_SYNC_BAUDRATE);
+    // Do **not** reinitialize the UART since this uart is shared with the
+    // synchronizer.
+    if (!uart_is_enabled(uart_id))
+        uart_init(uart_id, HARP_SYNC_BAUDRATE);
     uart_set_hw_flow(uart_id, false, false);
     uart_set_fifo_enabled(uart_id, false); // Set FIFO size to 1.
     uart_set_format(uart_id, 8, 1, UART_PARITY_NONE);
@@ -366,10 +369,12 @@ void update_app_state()
         return;
     uint32_t curr_time_us = HarpCore::harp_time_us_32();
     // Handle edge-case where we went from not-synced to synced.
-    if (HarpSynchronizer::has_synced() && !was_synced)
+    if (HarpSynchronizer::is_synced() && !was_synced)
     {
         was_synced = true;
-        last_msg_emit_time_us = HarpCore::harp_time_us_32(); // reset counter.
+        // Get a new time value to avoid race condition with old curr_time_us.
+        curr_time_us = HarpCore::harp_time_us_32();
+        last_msg_emit_time_us = curr_time_us; // reset counter.
     }
     // Handle periodic counter msg dispatch.
     if (int32_t(curr_time_us - last_msg_emit_time_us) >= counter_interval_us)
