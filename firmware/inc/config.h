@@ -2,7 +2,6 @@
 #define CONFIG_H
 
 
-#define UART_TX_PIN (0)
 #define HARP_CORE_LED_PIN (25)
 
 #define HARP_DEVICE_ID (1404)
@@ -18,13 +17,18 @@
 
 #define MAX_EVENT_FREQUENCY_HZ (1000)
 
-#define SLOW_SYNC_UART (uart0)
-#define SLOW_SYNC_BAUDRATE (1000UL)
-#define SLOW_SYNC_CLKOUT_PIN (0)
-#define SLOW_SYNC_START_OFFSET_US (0) // Offset from spec to account for
+#define AUX_SYNC_UART (uart0)
+#define AUX_SYNC_DEFAULT_BAUDRATE (1000UL)
+#define MIN_AUX_SYNC_BAUDRATE (40U) // Aux Baud rate should be faster than this
+                                    // minimum baud rate, or we will not have
+                                    // enough time to emit a full 4-byte
+                                    // (+1 start and 1 stop bit) message at 1Hz.
+#define AUX_PIN (0)
+#define AUX_SYNC_START_OFFSET_US (0) // Offset from spec to account for
                                       // transmission time.
 
-#define LED_PIN (25)
+#define LED0_PIN (24)
+#define LED1_PIN (25)
 
 
 // Doesnt work yet:

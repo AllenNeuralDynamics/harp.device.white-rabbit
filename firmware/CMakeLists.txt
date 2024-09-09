@@ -13,9 +13,10 @@ include(${PICO_SDK_PATH}/pico_sdk_init.cmake)
 
 # Use modern conventions like std::invoke
 set(CMAKE_CXX_STANDARD 17)
+# Enable try/catch exception interface.
+#set(PICO_CXX_ENABLE_EXCEPTIONS 1)
 
-#project(white_rabbit)
-project(white_rabbit-${COMMIT_ID} VERSION 1.0 DESCRIPTION "${COMMIT_ID}")
+project(white_rabbit)
 
 pico_sdk_init()
 add_subdirectory(lib/harp.core.rp2040/firmware) # Path to harp.core.rp2040.
@@ -36,7 +37,7 @@ include_directories(inc)
 
 target_link_libraries(uart_nonblocking hardware_dma hardware_timer pico_stdlib)
 target_link_libraries(white_rabbit_app harp_core harp_c_app harp_sync
-                      hardware_divider pico_stdlib)
+                      hardware_divider pico_stdlib uart_nonblocking hardware_dma)
 
 target_link_libraries(${PROJECT_NAME} harp_core harp_c_app harp_sync pico_stdlib
                       hardware_dma hardware_timer uart_nonblocking
