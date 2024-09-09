@@ -30,7 +30,7 @@ extern const uint8_t fw_version_minor;
 extern const uint16_t serial_number;
 
 // Setup for Harp App
-const size_t REG_COUNT{4};
+const size_t REG_COUNT{5};
 
 // pre-computed value for when to emit periodic counter msgs.
 extern uint32_t counter_interval_us;
@@ -48,9 +48,14 @@ struct app_regs_t
     volatile uint32_t Counter;
     volatile uint16_t CounterFrequencyHz;
     volatile uint8_t AuxPortFn; // 0 --> no behavior.
-                                // 1 --> output slow uart time msg (4-bytes)
-                                //       (reset behavior).
+                                // 1 --> output auxiliary uart time msg
+                                //       (4-bytes, reset behavior) with baud
+                                //       rate specified in AuxBaudRate register.
+                                //       Falling edge of the message starting
+                                //       bit happens on the start of the second
+                                //       encoded in the msg.
                                 // 2 --> output PPS signal.
+    uint32_t AuxBaudRate;   // Set baud rate (in bps) for auxiliary UART.
     // More app "registers" here.
 };
 #pragma pack(pop)
@@ -63,7 +68,7 @@ extern RegSpecs app_reg_specs[REG_COUNT];
 extern RegFnPair reg_handler_fns[REG_COUNT];
 
 // Harp CLKout Double Buffer Setup
-extern volatile uint harp_clkout_dma_chan;
+extern volatile int harp_clkout_dma_chan;
 
 extern int32_t harp_clkout_alarm_num;
 extern uint32_t harp_clkout_irq_number;
@@ -76,15 +81,15 @@ extern volatile uint8_t harp_time_msg_b[6];
 extern volatile uint8_t *dispatch_buffer;
 extern volatile uint8_t *load_buffer;
 
-// Slow CLKout Double Buffer Setup
-extern volatile uint slow_clkout_dma_chan;
+// AUX CLKout Double Buffer Setup
+extern volatile int aux_clkout_dma_chan;
 
-extern int32_t slow_clkout_alarm_num;
-extern uint32_t slow_clkout_iqr_number;
+extern int32_t aux_clkout_alarm_num;
+extern uint32_t aux_clkout_iqr_number;
 
-// Ping-Pong Buffer for Slow Clkout.
-extern volatile uint32_t slow_clkout_seconds_a;
-extern volatile uint32_t slow_clkout_seconds_b;
+// Ping-Pong Buffer for AUX Clkout.
+extern volatile uint32_t aux_clkout_seconds_a;
+extern volatile uint32_t aux_clkout_seconds_b;
 
 // Pointers for swapping buffers.
 extern volatile uint32_t *dispatch_second;
@@ -107,22 +112,23 @@ void setup_harp_clkout();
 void dispatch_and_reschedule_harp_clkout();
 
 /**
- * \brief Setup AuxFn behavior where we dispatch the current time once per second
- *  on the whole second at a slow baud rate
+ * \brief Setup AuxFn behavior where we dispatch the current time once per
+ *  second at the start of the whole second at a baud rate specified in the app
+    registers.
 */
-void setup_slow_clkout();
+void setup_aux_clkout();
 
 /*
  * \brief Dispatch the time on the Auxiliary output and reschedule the next
  *  dispatch.
  * \warning called inside of an interrupt.
  */
-void dispatch_and_reschedule_slow_clkout();
+void dispatch_and_reschedule_aux_clkout();
 
 /*
  * \brief unclaim resources to produce the slow clkout signal.
  */
-void cleanup_slow_clkout();
+void cleanup_aux_clkout();
 
 /*
  * \brief Setup AuxFn behavior to toggle the AuxPort GPIO pin on the whole
@@ -149,6 +155,8 @@ void reset_aux_fn();
 void write_counter_frequency_hz(msg_t& msg);
 
 void write_aux_port_fn(msg_t& msg);
+
+void write_aux_baud_rate(msg_t& msg);
 
 /**
  * \brief update the app state. Called in a loop in the Harp App.

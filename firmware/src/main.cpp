@@ -25,7 +25,7 @@ int main()
 {
 #if defined(DEBUG)
 #warning "Auxilary Port functionality will be overwritten to dispatch UART DEBUG msgs at 921600bps."
-    stdio_uart_init_full(SLOW_SYNC_UART, 921600, AUX_PIN, -1); // TX only.
+    stdio_uart_init_full(AUX_SYNC_UART, 921600, AUX_PIN, -1); // TX only.
     printf("Hello, from an RP2040!\r\n");
 #endif
     // Init Synchronizer. Do this first since the WhiteRabbit app will attempt
