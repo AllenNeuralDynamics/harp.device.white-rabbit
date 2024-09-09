@@ -150,7 +150,9 @@ void setup_aux_clkout()
     irq_set_enabled(aux_clkout_irq_number, true);
     // Compute start time for AUX CLKOUT msg.
     // Get the next whole second.
-    uint32_t curr_harp_seconds = HarpCore::harp_time_s();
+    uint32_t curr_harp_seconds = HarpCore::harp_time_s(); // Note: rounds down.
+    // Load initial value to be dispatched at the start of the next second.
+    *dispatch_second = curr_harp_seconds + 1;
     uint32_t next_msg_harp_time_us_32 = (curr_harp_seconds * 1000000UL) + 1'000'000UL;
     // Apply offset if any.
     next_msg_harp_time_us_32 += AUX_SYNC_START_OFFSET_US;
@@ -170,8 +172,8 @@ void __not_in_flash_func(dispatch_and_reschedule_aux_clkout)()
                          (uint8_t*)dispatch_second, sizeof(dispatch_second));
     // Clear the latched hardware interrupt.
     timer_hw->intr = (1u << aux_clkout_alarm_num);
-    // Get the next whole harp time second.
-    uint32_t curr_harp_seconds = HarpCore::harp_time_s();
+    // Compute the *next* whole harp time second.
+    uint32_t curr_harp_seconds = HarpCore::harp_time_s(); // Note: rounds down.
     uint32_t next_msg_harp_time_us_32 = (curr_harp_seconds * 1000000UL) + 1'000'000UL;
     // Account for extra second if we wake up *before* the elapse of the next
     // whole second.
@@ -180,9 +182,9 @@ void __not_in_flash_func(dispatch_and_reschedule_aux_clkout)()
     // Add offset (if any).
     next_msg_harp_time_us_32 += AUX_SYNC_START_OFFSET_US;
     // Update time contents in the next message.
-    *load_second = curr_harp_seconds;
-    //memcpy((void*)(load_second + 2), (void*)(&curr_harp_seconds),
-    //       sizeof(load_second));
+    // Note that this value will fire on the next occurence of this ISR, so we
+    // need to load the *next* second.
+    *load_second = curr_harp_seconds + 1;
     // Toggle ping-pong buffers.
     std::swap(load_second, dispatch_second);
     // Schedule next time msg dispatch in system time.
