@@ -77,6 +77,14 @@ void setup_harp_clkout()
     // Offset such that the start of last byte occurs on the whole second per:
     // https://harp-tech.org/protocol/SynchronizationClock.html#serial-configuration
     next_msg_harp_time_us_32 += HARP_SYNC_START_OFFSET_US;
+    // Compute the time sent in the actual msg.
+    // Note that we are dispatching the **next** second that takes place
+    // after the msg has been sent.
+    uint32_t harp_timestamp_msg = curr_harp_seconds + 1;
+    // Load the first msg to dispatch. Subsequent loads will go into the
+    //  load_buffer.
+    memcpy((void*)(dispatch_buffer + 2), (void*)(&harp_timestamp_msg),
+           sizeof(curr_harp_seconds));
     // Schedule next time msg dispatch in system time.
     // Low-level interface (fast!) to re-schedule this function.
     uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us_32);
@@ -105,8 +113,12 @@ void __not_in_flash_func(dispatch_and_reschedule_harp_clkout)()
     // Offset such that the start of last byte occurs on the whole second per:
     // https://harp-tech.org/protocol/SynchronizationClock.html#serial-configuration
     next_msg_harp_time_us_32 += HARP_SYNC_START_OFFSET_US;
+    // Compute the time sent in the actual msg.
+    // Note that we are dispatching the **next** second that takes place
+    // after the msg has been sent.
+    uint32_t harp_timestamp_msg = curr_harp_seconds + 1;
     // Update time contents in the next message.
-    memcpy((void*)(load_buffer + 2), (void*)(&curr_harp_seconds),
+    memcpy((void*)(load_buffer + 2), (void*)(&harp_timestamp_msg),
            sizeof(curr_harp_seconds));
     // Toggle ping-pong buffers.
     std::swap(load_buffer, dispatch_buffer);
