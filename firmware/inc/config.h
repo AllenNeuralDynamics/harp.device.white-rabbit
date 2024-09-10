@@ -12,8 +12,13 @@
 #define HARP_SYNC_BAUDRATE (100000UL)
 #define HARP_CLKOUT_PIN (4)
 #define HARP_CLKIN_PIN (5)
-#define HARP_SYNC_START_OFFSET_US (-572) // Offset from spec to account for
-                                         // transmission time.
+#define HARP_SYNC_START_OFFSET_US (-1172) // Offset from spec to account for
+                                          // transmission time.
+                                          // Spec is: next whole second occurs
+                                          // 672 us after the start of the last
+                                          // byte. We offset another 500us
+                                          // (5[bytes]*100[kbps]) to make the
+                                          // above statement meet the spec.
 
 #define MAX_EVENT_FREQUENCY_HZ (1000)
 

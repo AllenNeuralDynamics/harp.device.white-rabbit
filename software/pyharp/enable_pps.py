@@ -19,7 +19,7 @@ class Regs(Enum):
 # Open serial connection and save communication to a file
 if os.name == 'posix': # check for Linux.
     #device = Device("/dev/harp_device_00", "ibl.bin")
-    device = Device("/dev/ttyACM0", "ibl.bin")
+    device = Device("/dev/ttyACM1", "ibl.bin")
 else: # assume Windows.
     device = Device("COM95", "ibl.bin")
 start_time = perf_counter()
