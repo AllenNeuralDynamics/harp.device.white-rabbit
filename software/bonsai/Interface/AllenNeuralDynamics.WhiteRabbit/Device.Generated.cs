@@ -40,7 +40,8 @@ namespace AllenNeuralDynamics.WhiteRabbit
             { 32, typeof(ConnectedDevices) },
             { 33, typeof(Counter) },
             { 34, typeof(CounterFrequencyHz) },
-            { 35, typeof(AuxPortMode) }
+            { 35, typeof(AuxPortMode) },
+            { 36, typeof(AuxPortBaudRate) }
         };
     }
 
@@ -73,10 +74,12 @@ namespace AllenNeuralDynamics.WhiteRabbit
     /// <seealso cref="Counter"/>
     /// <seealso cref="CounterFrequencyHz"/>
     /// <seealso cref="AuxPortMode"/>
+    /// <seealso cref="AuxPortBaudRate"/>
     [XmlInclude(typeof(ConnectedDevices))]
     [XmlInclude(typeof(Counter))]
     [XmlInclude(typeof(CounterFrequencyHz))]
     [XmlInclude(typeof(AuxPortMode))]
+    [XmlInclude(typeof(AuxPortBaudRate))]
     [Description("Filters register-specific messages reported by the WhiteRabbit device.")]
     public class FilterRegister : FilterRegisterBuilder, INamedElement
     {
@@ -102,14 +105,17 @@ namespace AllenNeuralDynamics.WhiteRabbit
     /// <seealso cref="Counter"/>
     /// <seealso cref="CounterFrequencyHz"/>
     /// <seealso cref="AuxPortMode"/>
+    /// <seealso cref="AuxPortBaudRate"/>
     [XmlInclude(typeof(ConnectedDevices))]
     [XmlInclude(typeof(Counter))]
     [XmlInclude(typeof(CounterFrequencyHz))]
     [XmlInclude(typeof(AuxPortMode))]
+    [XmlInclude(typeof(AuxPortBaudRate))]
     [XmlInclude(typeof(TimestampedConnectedDevices))]
     [XmlInclude(typeof(TimestampedCounter))]
     [XmlInclude(typeof(TimestampedCounterFrequencyHz))]
     [XmlInclude(typeof(TimestampedAuxPortMode))]
+    [XmlInclude(typeof(TimestampedAuxPortBaudRate))]
     [Description("Filters and selects specific messages reported by the WhiteRabbit device.")]
     public partial class Parse : ParseBuilder, INamedElement
     {
@@ -132,10 +138,12 @@ namespace AllenNeuralDynamics.WhiteRabbit
     /// <seealso cref="Counter"/>
     /// <seealso cref="CounterFrequencyHz"/>
     /// <seealso cref="AuxPortMode"/>
+    /// <seealso cref="AuxPortBaudRate"/>
     [XmlInclude(typeof(ConnectedDevices))]
     [XmlInclude(typeof(Counter))]
     [XmlInclude(typeof(CounterFrequencyHz))]
     [XmlInclude(typeof(AuxPortMode))]
+    [XmlInclude(typeof(AuxPortBaudRate))]
     [Description("Formats a sequence of values as specific WhiteRabbit register messages.")]
     public partial class Format : FormatBuilder, INamedElement
     {
@@ -537,6 +545,102 @@ namespace AllenNeuralDynamics.WhiteRabbit
     }
 
     /// <summary>
+    /// Represents a register that the baud rate, in bps, of the auxiliary port when in HarpClock mode.
+    /// </summary>
+    [Description("The baud rate, in bps, of the auxiliary port when in HarpClock mode.")]
+    public partial class AuxPortBaudRate
+    {
+        /// <summary>
+        /// Represents the address of the <see cref="AuxPortBaudRate"/> register. This field is constant.
+        /// </summary>
+        public const int Address = 36;
+
+        /// <summary>
+        /// Represents the payload type of the <see cref="AuxPortBaudRate"/> register. This field is constant.
+        /// </summary>
+        public const PayloadType RegisterType = PayloadType.U32;
+
+        /// <summary>
+        /// Represents the length of the <see cref="AuxPortBaudRate"/> register. This field is constant.
+        /// </summary>
+        public const int RegisterLength = 1;
+
+        /// <summary>
+        /// Returns the payload data for <see cref="AuxPortBaudRate"/> register messages.
+        /// </summary>
+        /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
+        /// <returns>A value representing the message payload.</returns>
+        public static uint GetPayload(HarpMessage message)
+        {
+            return message.GetPayloadUInt32();
+        }
+
+        /// <summary>
+        /// Returns the timestamped payload data for <see cref="AuxPortBaudRate"/> register messages.
+        /// </summary>
+        /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
+        /// <returns>A value representing the timestamped message payload.</returns>
+        public static Timestamped<uint> GetTimestampedPayload(HarpMessage message)
+        {
+            return message.GetTimestampedPayloadUInt32();
+        }
+
+        /// <summary>
+        /// Returns a Harp message for the <see cref="AuxPortBaudRate"/> register.
+        /// </summary>
+        /// <param name="messageType">The type of the Harp message.</param>
+        /// <param name="value">The value to be stored in the message payload.</param>
+        /// <returns>
+        /// A <see cref="HarpMessage"/> object for the <see cref="AuxPortBaudRate"/> register
+        /// with the specified message type and payload.
+        /// </returns>
+        public static HarpMessage FromPayload(MessageType messageType, uint value)
+        {
+            return HarpMessage.FromUInt32(Address, messageType, value);
+        }
+
+        /// <summary>
+        /// Returns a timestamped Harp message for the <see cref="AuxPortBaudRate"/>
+        /// register.
+        /// </summary>
+        /// <param name="timestamp">The timestamp of the message payload, in seconds.</param>
+        /// <param name="messageType">The type of the Harp message.</param>
+        /// <param name="value">The value to be stored in the message payload.</param>
+        /// <returns>
+        /// A <see cref="HarpMessage"/> object for the <see cref="AuxPortBaudRate"/> register
+        /// with the specified message type, timestamp, and payload.
+        /// </returns>
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, uint value)
+        {
+            return HarpMessage.FromUInt32(Address, timestamp, messageType, value);
+        }
+    }
+
+    /// <summary>
+    /// Provides methods for manipulating timestamped messages from the
+    /// AuxPortBaudRate register.
+    /// </summary>
+    /// <seealso cref="AuxPortBaudRate"/>
+    [Description("Filters and selects timestamped messages from the AuxPortBaudRate register.")]
+    public partial class TimestampedAuxPortBaudRate
+    {
+        /// <summary>
+        /// Represents the address of the <see cref="AuxPortBaudRate"/> register. This field is constant.
+        /// </summary>
+        public const int Address = AuxPortBaudRate.Address;
+
+        /// <summary>
+        /// Returns timestamped payload data for <see cref="AuxPortBaudRate"/> register messages.
+        /// </summary>
+        /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
+        /// <returns>A value representing the timestamped message payload.</returns>
+        public static Timestamped<uint> GetPayload(HarpMessage message)
+        {
+            return AuxPortBaudRate.GetTimestampedPayload(message);
+        }
+    }
+
+    /// <summary>
     /// Represents an operator which creates standard message payloads for the
     /// WhiteRabbit device.
     /// </summary>
@@ -544,14 +648,17 @@ namespace AllenNeuralDynamics.WhiteRabbit
     /// <seealso cref="CreateCounterPayload"/>
     /// <seealso cref="CreateCounterFrequencyHzPayload"/>
     /// <seealso cref="CreateAuxPortModePayload"/>
+    /// <seealso cref="CreateAuxPortBaudRatePayload"/>
     [XmlInclude(typeof(CreateConnectedDevicesPayload))]
     [XmlInclude(typeof(CreateCounterPayload))]
     [XmlInclude(typeof(CreateCounterFrequencyHzPayload))]
     [XmlInclude(typeof(CreateAuxPortModePayload))]
+    [XmlInclude(typeof(CreateAuxPortBaudRatePayload))]
     [XmlInclude(typeof(CreateTimestampedConnectedDevicesPayload))]
     [XmlInclude(typeof(CreateTimestampedCounterPayload))]
     [XmlInclude(typeof(CreateTimestampedCounterFrequencyHzPayload))]
     [XmlInclude(typeof(CreateTimestampedAuxPortModePayload))]
+    [XmlInclude(typeof(CreateTimestampedAuxPortBaudRatePayload))]
     [Description("Creates standard message payloads for the WhiteRabbit device.")]
     public partial class CreateMessage : CreateMessageBuilder, INamedElement
     {
@@ -781,6 +888,60 @@ namespace AllenNeuralDynamics.WhiteRabbit
         public HarpMessage GetMessage(double timestamp, MessageType messageType)
         {
             return AllenNeuralDynamics.WhiteRabbit.AuxPortMode.FromPayload(timestamp, messageType, GetPayload());
+        }
+    }
+
+    /// <summary>
+    /// Represents an operator that creates a message payload
+    /// that the baud rate, in bps, of the auxiliary port when in HarpClock mode.
+    /// </summary>
+    [DisplayName("AuxPortBaudRatePayload")]
+    [Description("Creates a message payload that the baud rate, in bps, of the auxiliary port when in HarpClock mode.")]
+    public partial class CreateAuxPortBaudRatePayload
+    {
+        /// <summary>
+        /// Gets or sets the value that the baud rate, in bps, of the auxiliary port when in HarpClock mode.
+        /// </summary>
+        [Description("The value that the baud rate, in bps, of the auxiliary port when in HarpClock mode.")]
+        public uint AuxPortBaudRate { get; set; } = 1000;
+
+        /// <summary>
+        /// Creates a message payload for the AuxPortBaudRate register.
+        /// </summary>
+        /// <returns>The created message payload value.</returns>
+        public uint GetPayload()
+        {
+            return AuxPortBaudRate;
+        }
+
+        /// <summary>
+        /// Creates a message that the baud rate, in bps, of the auxiliary port when in HarpClock mode.
+        /// </summary>
+        /// <param name="messageType">Specifies the type of the created message.</param>
+        /// <returns>A new message for the AuxPortBaudRate register.</returns>
+        public HarpMessage GetMessage(MessageType messageType)
+        {
+            return AllenNeuralDynamics.WhiteRabbit.AuxPortBaudRate.FromPayload(messageType, GetPayload());
+        }
+    }
+
+    /// <summary>
+    /// Represents an operator that creates a timestamped message payload
+    /// that the baud rate, in bps, of the auxiliary port when in HarpClock mode.
+    /// </summary>
+    [DisplayName("TimestampedAuxPortBaudRatePayload")]
+    [Description("Creates a timestamped message payload that the baud rate, in bps, of the auxiliary port when in HarpClock mode.")]
+    public partial class CreateTimestampedAuxPortBaudRatePayload : CreateAuxPortBaudRatePayload
+    {
+        /// <summary>
+        /// Creates a timestamped message that the baud rate, in bps, of the auxiliary port when in HarpClock mode.
+        /// </summary>
+        /// <param name="timestamp">The timestamp of the message payload, in seconds.</param>
+        /// <param name="messageType">Specifies the type of the created message.</param>
+        /// <returns>A new timestamped message for the AuxPortBaudRate register.</returns>
+        public HarpMessage GetMessage(double timestamp, MessageType messageType)
+        {
+            return AllenNeuralDynamics.WhiteRabbit.AuxPortBaudRate.FromPayload(timestamp, messageType, GetPayload());
         }
     }
 

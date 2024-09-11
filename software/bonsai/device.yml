@@ -31,6 +31,12 @@ registers:
     access: Write
     description: "The function of the auxiliary port."
     maskType: AuxPortModeConfig
+  AuxPortBaudRate:
+    address: 36
+    type: U32
+    access: Write
+    defaultValue: 1000
+    description: "The baud rate, in bps, of the auxiliary port when in HarpClock mode."
 
 bitMasks:
   ClockOutChannels:
