@@ -17,6 +17,7 @@ class Regs(Enum):
 
 
 BAUDRATE = 115200
+#BAUDRATE = 1000
 
 # Open the device and print the info on screen
 # Open serial connection and save communication to a file
@@ -29,11 +30,16 @@ start_time = perf_counter()
 # Enable sensor message events at 1 Hz
 print(f"Setting Aux UART baud rate to {BAUDRATE} bps.")
 reply = device.send(HarpMessage.WriteU32(Regs.AuxPortBaudRate.value, BAUDRATE).frame)
-print("Enabling Aux UART. Press CTRL-C to exit.")
+print("Enabling Aux UART.")
 reply = device.send(HarpMessage.WriteU16(Regs.AuxPortFn.value, 0b01).frame)
+print("Enabling Heartbeat. Press CTRL-C to exit.")
+device.enable_heartbeat()
 try:
     while True:
-        pass
+        event_response = device._read()
+        if event_response is not None:
+            print()
+            print(event_response)
 except KeyboardInterrupt:
     pass
 finally:

@@ -10,14 +10,9 @@
 #include <pico/unique_id.h>
 
 // Harp App Setup.
-const uint16_t who_am_i = HARP_DEVICE_ID;
-const uint8_t hw_version_major = 0;
-const uint8_t hw_version_minor = 0;
 const uint8_t assembly_version = 0;
 const uint8_t harp_version_major = 0;
 const uint8_t harp_version_minor = 0;
-const uint8_t fw_version_major = 0;
-const uint8_t fw_version_minor = 0;
 const uint16_t serial_number = 0;
 
 // Core0 main.
@@ -33,10 +28,11 @@ int main()
     // initialized.
     HarpSynchronizer& sync = HarpSynchronizer::init(HARP_UART, HARP_CLKIN_PIN);
     // Create Harp App.
-    HarpCApp& app = HarpCApp::init(who_am_i, hw_version_major, hw_version_minor,
+    HarpCApp& app = HarpCApp::init(HARP_DEVICE_ID,
+                                   HW_VERSION_MAJOR, HW_VERSION_MINOR,
                                    assembly_version,
                                    harp_version_major, harp_version_minor,
-                                   fw_version_major, fw_version_minor,
+                                   FW_VERSION_MAJOR, FW_VERSION_MINOR,
                                    serial_number, "White Rabbit",
                                    (const uint8_t*)GIT_HASH, // in CMakeLists.txt.
                                    &app_regs, app_reg_specs,
