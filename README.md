@@ -1,6 +1,8 @@
-An RP2040-based 16-output Harp Clock Synchronizer
+An RP2040-based 16-output Harp Clock Synchronizer. 
 
 This device can serve as a drop-in replacement for the [Harp-Tech Clock Synchronizer](https://github.com/harp-tech/device.clocksynchronizer) with added capabilities.
+
+![](./assets/pics/white_rabbit.png)
 
 ## Features
 * 16 output channels for distributing clocks to other devices
