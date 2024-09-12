@@ -379,7 +379,8 @@ void write_aux_baud_rate(msg_t& msg)
     uint32_t old_baud_rate = app_regs.AuxBaudRate;
     HarpCore::copy_msg_payload_to_register(msg);
     // Reject invalid baud rates.
-    if (app_regs.AuxBaudRate < MIN_AUX_SYNC_BAUDRATE)
+    if (app_regs.AuxBaudRate < MIN_AUX_SYNC_BAUDRATE ||
+        app_regs.AuxBaudRate > MAX_AUX_SYNC_BAUDRATE)
     {
         if (!HarpCore::is_muted())
             HarpCore::send_harp_reply(WRITE_ERROR, msg.header.address);

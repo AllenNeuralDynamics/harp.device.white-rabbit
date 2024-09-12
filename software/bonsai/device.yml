@@ -3,8 +3,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/harp-tech/reflex-generator/main/schema/device.json
 device: WhiteRabbit
 whoAmI: 1404
-firmwareVersion: "0.0"
-hardwareTargets: "0.0"
+firmwareVersion: "0.1"
+hardwareTargets: "0.1"
 registers:
   ConnectedDevices:
     address: 32
