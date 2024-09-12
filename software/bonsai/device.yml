@@ -36,6 +36,8 @@ registers:
     type: U32
     access: Write
     defaultValue: 1000
+    minValue: 40
+    maxValue: 1000000
     description: "The baud rate, in bps, of the auxiliary port when in HarpClock mode."
 
 bitMasks:

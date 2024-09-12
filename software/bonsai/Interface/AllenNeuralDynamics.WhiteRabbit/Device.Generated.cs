@@ -902,6 +902,8 @@ namespace AllenNeuralDynamics.WhiteRabbit
         /// <summary>
         /// Gets or sets the value that the baud rate, in bps, of the auxiliary port when in HarpClock mode.
         /// </summary>
+        [Range(min: 40, max: 1000000)]
+        [Editor(DesignTypes.NumericUpDownEditor, DesignTypes.UITypeEditor)]
         [Description("The value that the baud rate, in bps, of the auxiliary port when in HarpClock mode.")]
         public uint AuxPortBaudRate { get; set; } = 1000;
 
