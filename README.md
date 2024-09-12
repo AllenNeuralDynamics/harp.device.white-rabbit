@@ -2,7 +2,7 @@ An RP2040-based 16-output [Harp](https://github.com/harp-tech/protocol)-complian
 
 This device can serve as a drop-in replacement for the [Harp-Tech Clock Synchronizer](https://github.com/harp-tech/device.clocksynchronizer) with added capabilities.
 
-![](./assets/pics/white_rabbit.png)
+![PCB](./assets/pics/white_rabbit.png)
 
 ## Features
 * 16 output channels for distributing clocks to other devices
@@ -17,16 +17,16 @@ This external signa enables Harp devices to additionally further synchronize wit
 
 ### PPS Output
 This device optionally outputs a 1[Hz] signal with a 50% duty cycle on the whole second.
-![](./assets/pics/pps.png)
+![PPS](./assets/pics/pps.png)
 Error from the nominal Harp time is < 1[us].
 
 This feature is available on the AUX Port (3-pin terminal block).
 
 ### AUX UART Output
 This device optionally outputs a the current time in seconds at the start of the whole second.
-![](./assets/pics/aux_uart.png)
+![AUX_UART](./assets/pics/aux_uart.png)
 Error from the nominal Harp time is < 3[us].
 
-![](./assets/pics/aux_uart_specs.png)
+![AUX_UART_ERROR](./assets/pics/aux_uart_specs.png)
 
 This feature is available on the AUX Port (3-pin terminal block), and the baud rate is configurable via Harp Protocol (U32 in Register 36).
