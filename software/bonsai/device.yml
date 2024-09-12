@@ -4,7 +4,7 @@
 device: WhiteRabbit
 whoAmI: 1404
 firmwareVersion: "0.1"
-hardwareTargets: "0.0"
+hardwareTargets: "0.1"
 registers:
   ConnectedDevices:
     address: 32
