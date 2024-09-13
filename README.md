@@ -30,3 +30,11 @@ Error from the nominal Harp time is < 3[us].
 ![AUX_UART_ERROR](./assets/pics/aux_uart_specs.png)
 
 This feature is available on the AUX Port (3-pin terminal block), and the baud rate is configurable via Harp Protocol (U32 in Register 36).
+
+## Developer Notes
+In the firmware's **CMakeLists.txt**, adding (or uncommenting) the debug message below:
+````cmake
+add_definitions(-DDEBUG)
+````
+will *override* the Auxiliary port behavior to use the auxiliary uart for `printf`-style debug messages.
+`PPS` and `AUX UART` features will not be available in debug mode.
