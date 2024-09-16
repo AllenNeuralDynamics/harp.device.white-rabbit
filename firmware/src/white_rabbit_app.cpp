@@ -2,7 +2,7 @@
 
 // Apply starting values.
 uint32_t counter_interval_us = 0;
-uint32_t last_msg_emit_time_us;
+uint64_t last_msg_emit_time_us;
 bool was_synced = false;
 
 app_regs_t app_regs;
@@ -73,10 +73,11 @@ void setup_harp_clkout()
     // Compute start time for Harp CLKOUT msg.
     // Get the next whole second.
     uint32_t curr_harp_seconds = HarpCore::harp_time_s();
-    uint32_t next_msg_harp_time_us_32 = (curr_harp_seconds * 1000000UL) + 1'000'000UL;
+    uint64_t next_msg_harp_time_us = (uint64_t(curr_harp_seconds) * 1'000'000UL)
+                                     + 1'000'000UL;
     // Offset such that the start of last byte occurs on the whole second per:
     // https://harp-tech.org/protocol/SynchronizationClock.html#serial-configuration
-    next_msg_harp_time_us_32 += HARP_SYNC_START_OFFSET_US;
+    next_msg_harp_time_us += HARP_SYNC_START_OFFSET_US;
     // Compute the time sent in the actual msg.
     // Note that we are dispatching the **next** second that takes place
     // after the msg has been sent.
@@ -87,7 +88,7 @@ void setup_harp_clkout()
            sizeof(curr_harp_seconds));
     // Schedule next time msg dispatch in system time.
     // Low-level interface (fast!) to re-schedule this function.
-    uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us_32);
+    uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us);
     // Enable alarm to trigger interrupt.
     timer_hw->inte |= (1u << harp_clkout_alarm_num);
     // Arm alarm by writing the alarm time.
@@ -101,10 +102,11 @@ void __not_in_flash_func(dispatch_and_reschedule_harp_clkout)()
                          (uint8_t*)dispatch_buffer, 6);
     // Clear the latched hardware interrupt.
     timer_hw->intr = (1u << harp_clkout_alarm_num);
-    // Get the next whole harp time second. +2 bc we wake up *before* the
+    // Get the next whole harp time second. +2 because we wake up *before* the
     // elapse of the next whole second when we are supposed to emit the msg.
     uint32_t curr_harp_seconds = HarpCore::harp_time_s();
-    uint32_t next_msg_harp_time_us_32 = (curr_harp_seconds * 1000000UL) + 2'000'000UL;
+    uint64_t next_msg_harp_time_us = (uint64_t(curr_harp_seconds) * 1'000'000UL)
+                                     + 2'000'000UL;
 #if defined(DEBUG)
     printf("Sending: %x %x %x %x %x %x\r\n", dispatch_buffer[0],
            dispatch_buffer[1], dispatch_buffer[2], dispatch_buffer[3],
@@ -112,7 +114,7 @@ void __not_in_flash_func(dispatch_and_reschedule_harp_clkout)()
 #endif
     // Offset such that the start of last byte occurs on the whole second per:
     // https://harp-tech.org/protocol/SynchronizationClock.html#serial-configuration
-    next_msg_harp_time_us_32 += HARP_SYNC_START_OFFSET_US;
+    next_msg_harp_time_us += HARP_SYNC_START_OFFSET_US;
     // Compute the time sent in the actual msg.
     // Note that we are dispatching the **next** second that takes place
     // after the msg has been sent.
@@ -124,7 +126,7 @@ void __not_in_flash_func(dispatch_and_reschedule_harp_clkout)()
     std::swap(load_buffer, dispatch_buffer);
     // Schedule next time msg dispatch in system time.
     // Low-level interface (fast!) to re-schedule this function.
-    uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us_32);
+    uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us);
     // Enable alarm to trigger interrupt.
     timer_hw->inte |= (1u << harp_clkout_alarm_num);
     // Arm alarm by writing the alarm time.
@@ -165,12 +167,13 @@ void setup_aux_clkout()
     uint32_t curr_harp_seconds = HarpCore::harp_time_s(); // Note: rounds down.
     // Load initial value to be dispatched at the start of the next second.
     *dispatch_second = curr_harp_seconds + 1;
-    uint32_t next_msg_harp_time_us_32 = (curr_harp_seconds * 1000000UL) + 1'000'000UL;
+    uint64_t next_msg_harp_time_us = (uint64_t(curr_harp_seconds) * 1'000'000UL)
+                                     + 1'000'000UL;
     // Apply offset if any.
-    next_msg_harp_time_us_32 += AUX_SYNC_START_OFFSET_US;
+    next_msg_harp_time_us += AUX_SYNC_START_OFFSET_US;
     // Schedule next time msg dispatch in system time.
     // Low-level interface (fast!) to re-schedule this function.
-    uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us_32);
+    uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us);
     // Enable alarm to trigger interrupt.
     timer_hw->inte |= (1u << aux_clkout_alarm_num);
     // Arm alarm by writing the alarm time.
@@ -186,13 +189,14 @@ void __not_in_flash_func(dispatch_and_reschedule_aux_clkout)()
     timer_hw->intr = (1u << aux_clkout_alarm_num);
     // Compute the *next* whole harp time second.
     uint32_t curr_harp_seconds = HarpCore::harp_time_s(); // Note: rounds down.
-    uint32_t next_msg_harp_time_us_32 = (curr_harp_seconds * 1000000UL) + 1'000'000UL;
+    uint64_t next_msg_harp_time_us = (uint64_t(curr_harp_seconds) * 1'000'000UL)
+                                     + 1'000'000UL;
     // Account for extra second if we wake up *before* the elapse of the next
     // whole second.
     if (AUX_SYNC_START_OFFSET_US < 0)
-        next_msg_harp_time_us_32 += 1'000'000UL;
+        next_msg_harp_time_us += 1'000'000UL;
     // Add offset (if any).
-    next_msg_harp_time_us_32 += AUX_SYNC_START_OFFSET_US;
+    next_msg_harp_time_us += AUX_SYNC_START_OFFSET_US;
     // Update time contents in the next message.
     // Note that this value will fire on the next occurence of this ISR, so we
     // need to load the *next* second.
@@ -201,7 +205,7 @@ void __not_in_flash_func(dispatch_and_reschedule_aux_clkout)()
     std::swap(load_second, dispatch_second);
     // Schedule next time msg dispatch in system time.
     // Low-level interface (fast!) to re-schedule this function.
-    uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us_32);
+    uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us);
     // Enable alarm to trigger interrupt.
     timer_hw->inte |= (1u << aux_clkout_alarm_num);
     // Arm alarm by writing the alarm time.
@@ -258,10 +262,11 @@ void setup_pps_output()
     // Compute start time for PPS Output (next whole second).
     // Get the next whole second.
     uint32_t curr_harp_seconds = HarpCore::harp_time_s();
-    uint32_t next_msg_harp_time_us_32 = (curr_harp_seconds * 1000000UL) + 1'000'000UL;
+    uint64_t next_msg_harp_time_us = (uint64_t(curr_harp_seconds) * 1'000'000UL)
+                                     + 1'000'000UL;
     // Schedule next time msg dispatch in system time.
     // Low-level interface (fast!) to re-schedule this function.
-    uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us_32);
+    uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us);
     // Enable alarm to trigger interrupt.
     timer_hw->inte |= (1u << pps_output_alarm_num);
     // Arm alarm by writing the alarm time.
@@ -282,11 +287,15 @@ void __not_in_flash_func(update_pps_output)()
     // Schedule next update.
     // Get the next whole harp time **half**-second.
     // Round down. i.e: integer-divide into half-second multiples and add 0.5s.
-    uint32_t next_msg_harp_time_us_32 =
-        (uint32_t(HarpCore::harp_time_us_32() / 500'000UL) * 500'000UL) + 500'000UL;
+    uint64_t next_msg_harp_time_us =
+#if defined(PICO_RP2040)
+        div_u64u64(HarpCore::harp_time_us_64(), 500'000UL) * 500'000UL + 500'000UL;
+#else
+        (HarpCore::harp_time_us_64() / 500'000UL) * 500'000UL + 500'000UL;
+#endif
     // Schedule next time msg dispatch in system time.
     // Low-level interface (fast!) to re-schedule this function.
-    uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us_32);
+    uint32_t alarm_time_us = HarpCore::harp_to_system_us_32(next_msg_harp_time_us);
     // Enable alarm to trigger interrupt.
     timer_hw->inte |= (1u << pps_output_alarm_num);
     // Arm alarm by writing the alarm time.
@@ -323,15 +332,24 @@ void write_counter_frequency_hz(msg_t& msg)
     {
         app_regs.CounterFrequencyHz = MAX_EVENT_FREQUENCY_HZ;
         // Update pre-computed interval.
-        counter_interval_us = div_u32u32(1'000'000UL,
-                                         app_regs.CounterFrequencyHz);
-        last_msg_emit_time_us = time_us_32(); // reset interval.
+        counter_interval_us =
+#if defined(PICO_RP2040)
+            div_u64u64(1'000'000ULL, app_regs.CounterFrequencyHz);
+#else
+            1'000'000ULL / app_regs.CounterFrequencyHz;
+#endif
+        last_msg_emit_time_us = HarpCore::harp_time_us_64(); // reset interval.
         HarpCore::send_harp_reply(WRITE_ERROR, msg.header.address);
         return;
     }
     // Update pre-computed interval.
-    counter_interval_us = div_u32u32(1'000'000UL, app_regs.CounterFrequencyHz);
-    last_msg_emit_time_us = HarpCore::harp_time_us_32();
+    counter_interval_us =
+#if defined(PICO_RP2040)
+    div_u64u64(1'000'000ULL, app_regs.CounterFrequencyHz);
+#else
+    1'000'000ULL / app_regs.CounterFrequencyHz;
+#endif
+    last_msg_emit_time_us = HarpCore::harp_time_us_64();
     if (!HarpCore::is_muted())
         HarpCore::send_harp_reply(WRITE, msg.header.address);
 }
@@ -412,17 +430,17 @@ void update_app_state()
     // Nothing to do if we're not instructed to emit periodic msgs.
     if (app_regs.CounterFrequencyHz == 0)
         return;
-    uint32_t curr_time_us = HarpCore::harp_time_us_32();
+    uint64_t curr_time_us = HarpCore::harp_time_us_64();
     // Handle edge-case where we went from not-synced to synced.
     if (HarpSynchronizer::is_synced() && !was_synced)
     {
         was_synced = true;
         // Get a new time value to avoid race condition with old curr_time_us.
-        curr_time_us = HarpCore::harp_time_us_32();
+        curr_time_us = HarpCore::harp_time_us_64();
         last_msg_emit_time_us = curr_time_us; // reset counter.
     }
     // Handle periodic counter msg dispatch.
-    if (int32_t(curr_time_us - last_msg_emit_time_us) >= counter_interval_us)
+    if (int64_t(curr_time_us - last_msg_emit_time_us) >= counter_interval_us)
     {
         last_msg_emit_time_us += counter_interval_us;
         app_regs.Counter += 1;
@@ -445,6 +463,7 @@ void reset_app()
     counter_interval_us = 0;
     app_regs.Counter = 0;
     app_regs.CounterFrequencyHz = 0;
+    setup_harp_clkout();
 #if defined(DEBUG)
     app_regs.AuxPortFn = 0; // Start with AUX CLKout disabled.
 #else
@@ -455,7 +474,6 @@ void reset_app()
 #if !defined(DEBUG)
     setup_aux_clkout(); // Start with AUX CLKout fn enabled.
 #endif
-    setup_harp_clkout();
 }
 
 // Define "specs" per-register

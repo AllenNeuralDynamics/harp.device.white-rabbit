@@ -8,7 +8,7 @@
 
 #define FW_VERSION_MAJOR (0)
 #define FW_VERSION_MINOR (1)
-#define FW_VERSION_PATCH (1)
+#define FW_VERSION_PATCH (2)
 
 
 #define HARP_CORE_LED_PIN (25)
@@ -40,8 +40,8 @@
 #define MAX_AUX_SYNC_BAUDRATE (1'000'000UL) // Aux Baud rate should be slower
                                             // than this value.
 #define AUX_PIN (0)
-#define AUX_SYNC_START_OFFSET_US (0) // Offset from spec to account for
-                                      // transmission time.
+#define AUX_SYNC_START_OFFSET_US (0) // Offset from spec to account for fixed
+                                      // delays before transmission starts.
 
 #define LED0_PIN (24)
 #define LED1_PIN (25)

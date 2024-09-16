@@ -16,9 +16,12 @@ set(CMAKE_CXX_STANDARD 17)
 # Enable try/catch exception interface.
 #set(PICO_CXX_ENABLE_EXCEPTIONS 1)
 
+#set(PICO_COPY_TO_RAM 1)
+
 project(white_rabbit)
 
 pico_sdk_init()
+
 add_subdirectory(lib/harp.core.rp2040/firmware) # Path to harp.core.rp2040.
 
 add_library(uart_nonblocking
