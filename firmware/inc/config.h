@@ -40,8 +40,7 @@
 #define MAX_AUX_SYNC_BAUDRATE (1'000'000UL) // Aux Baud rate should be slower
                                             // than this value.
 #define AUX_PIN (0)
-#define AUX_SYNC_START_OFFSET_US (0) // Offset from spec to account for fixed
-                                      // delays before transmission starts.
+#define AUX_SYNC_START_OFFSET_US (0)
 
 #define LED0_PIN (24)
 #define LED1_PIN (25)

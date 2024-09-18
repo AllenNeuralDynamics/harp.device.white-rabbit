@@ -10,6 +10,7 @@
 #include <harp_c_app.h>
 #include <harp_synchronizer.h>
 #include <uart_nonblocking.h>
+#include <soft_uart.h>
 #include <core_registers.h>
 #include <pico/divider.h> // for fast hardware division.
 #ifdef DEBUG

@@ -33,9 +33,13 @@ volatile uint32_t __not_in_flash("double_buffers") aux_clkout_seconds_b;
 volatile uint32_t __not_in_flash("double_buffers") *dispatch_second;
 volatile uint32_t __not_in_flash("double_buffers") *load_second;
 
+// AUX CLKout software implementation.
+SoftUART soft_uart = SoftUART(AUX_PIN);
+
 // PPS Alarm/IRQ resources
 int32_t __not_in_flash("double_buffers") pps_output_alarm_num = -1;
 uint32_t __not_in_flash("double_buffers") pps_output_irq_number;
+
 
 void setup_harp_clkout()
 {
@@ -131,7 +135,6 @@ void __not_in_flash_func(dispatch_and_reschedule_harp_clkout)()
     timer_hw->inte |= (1u << harp_clkout_alarm_num);
     // Arm alarm by writing the alarm time.
     timer_hw->alarm[harp_clkout_alarm_num] = alarm_time_us;
-
 }
 
 void setup_aux_clkout()
@@ -139,14 +142,9 @@ void setup_aux_clkout()
     // Setup DMA.
     if (aux_clkout_dma_chan < 0) // Claim a DMA channel if not yet claimed.
         aux_clkout_dma_chan = dma_claim_unused_channel(true);
-    // Setup GPIO Pins.
-    // Setup UART TX for periodic transmission of the time.
-    uart_inst_t* aux_uart_id = AUX_SYNC_UART;
-    uart_init(aux_uart_id, app_regs.AuxBaudRate);
-    uart_set_hw_flow(aux_uart_id, false, false);
-    uart_set_fifo_enabled(aux_uart_id, false); // Set FIFO size to 1.
-    uart_set_format(aux_uart_id, 8, 1, UART_PARITY_NONE);
-    gpio_set_function(AUX_PIN, GPIO_FUNC_UART);
+    // Update baud rate (if it has changed).
+    soft_uart.reset();
+    soft_uart.set_baud_rate(app_regs.AuxBaudRate);
     // Setup AUX CLKOUT periodic outgoing time message.
     // Setup Outgoing msg double buffer;
     dispatch_second = &aux_clkout_seconds_a;
@@ -169,7 +167,7 @@ void setup_aux_clkout()
     *dispatch_second = curr_harp_seconds + 1;
     uint64_t next_msg_harp_time_us = (uint64_t(curr_harp_seconds) * 1'000'000UL)
                                      + 1'000'000UL;
-    // Apply offset if any.
+    // Apply additional offset if any.
     next_msg_harp_time_us += AUX_SYNC_START_OFFSET_US;
     // Schedule next time msg dispatch in system time.
     // Low-level interface (fast!) to re-schedule this function.
@@ -183,8 +181,8 @@ void setup_aux_clkout()
 void __not_in_flash_func(dispatch_and_reschedule_aux_clkout)()
 {
     // Dispatch the previously-configured time.
-    dispatch_uart_stream(aux_clkout_dma_chan, AUX_SYNC_UART,
-                         (uint8_t*)dispatch_second, sizeof(dispatch_second));
+    soft_uart.send((uint8_t*)dispatch_second, sizeof(dispatch_second));
+
     // Clear the latched hardware interrupt.
     timer_hw->intr = (1u << aux_clkout_alarm_num);
     // Compute the *next* whole harp time second.
@@ -230,7 +228,7 @@ void cleanup_aux_clkout()
     irq_set_enabled(aux_clkout_irq_number, false);
     irq_remove_handler(aux_clkout_irq_number,
                        dispatch_and_reschedule_aux_clkout);
-    uart_deinit(AUX_SYNC_UART);
+    soft_uart.cleanup();
     gpio_deinit(AUX_PIN);
 }
 
@@ -415,6 +413,8 @@ void write_aux_baud_rate(msg_t& msg)
 
 void update_app_state()
 {
+    if (soft_uart.requires_update())
+        soft_uart.update();
     // Update the state of ConnectedDevices.
     uint16_t old_port_raw = app_regs.ConnectedDevices;
     uint32_t port_raw = gpio_get_all();

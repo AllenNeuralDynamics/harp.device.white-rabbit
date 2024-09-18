@@ -16,8 +16,8 @@ class Regs(Enum):
     AuxPortBaudRate = 36    # U32
 
 
-#BAUDRATE = 115200
-BAUDRATE = 9600
+BAUDRATE = 115200
+#BAUDRATE = 9600
 #BAUDRATE = 1000
 
 # Open the device and print the info on screen
