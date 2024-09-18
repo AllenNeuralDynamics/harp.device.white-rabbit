@@ -17,6 +17,7 @@ class Regs(Enum):
 
 
 BAUDRATE = 115200
+#BAUDRATE = 9600
 #BAUDRATE = 1000
 
 # Open the device and print the info on screen

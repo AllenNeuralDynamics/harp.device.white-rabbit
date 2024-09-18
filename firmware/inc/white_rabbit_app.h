@@ -10,6 +10,7 @@
 #include <harp_c_app.h>
 #include <harp_synchronizer.h>
 #include <uart_nonblocking.h>
+#include <soft_uart.h>
 #include <core_registers.h>
 #include <pico/divider.h> // for fast hardware division.
 #ifdef DEBUG
@@ -34,7 +35,7 @@ const size_t REG_COUNT{5};
 
 // pre-computed value for when to emit periodic counter msgs.
 extern uint32_t counter_interval_us;
-extern uint32_t last_msg_emit_time_us;
+extern uint64_t last_msg_emit_time_us;
 extern bool was_synced;
 
 #pragma pack(push, 1)

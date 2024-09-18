@@ -8,6 +8,8 @@ add_definitions(-DGIT_HASH="${COMMIT_ID}") # Usable in source code.
 #add_definitions(-DDEBUG) # Uncomment for debugging
 
 
+#set(PICO_PLATFORM rp2040) # rp2040 is the default.
+
 # PICO_SDK_PATH must be defined.
 include(${PICO_SDK_PATH}/pico_sdk_init.cmake)
 
@@ -16,14 +18,14 @@ set(CMAKE_CXX_STANDARD 17)
 # Enable try/catch exception interface.
 #set(PICO_CXX_ENABLE_EXCEPTIONS 1)
 
+#set(PICO_COPY_TO_RAM 1)
+
 project(white_rabbit)
 
 pico_sdk_init()
-add_subdirectory(lib/harp.core.rp2040/firmware) # Path to harp.core.rp2040.
 
-add_library(uart_nonblocking
-    src/uart_nonblocking.cpp
-)
+add_subdirectory(lib/harp.core.rp2040/firmware) # Path to harp.core.rp2040.
+add_subdirectory(lib/pico.async-uart) # Path to uart_nonblocking and soft_uart
 
 add_library(white_rabbit_app
     src/white_rabbit_app.cpp
@@ -35,12 +37,12 @@ add_executable(${PROJECT_NAME}
 
 include_directories(inc)
 
-target_link_libraries(uart_nonblocking hardware_dma hardware_timer pico_stdlib)
 target_link_libraries(white_rabbit_app harp_core harp_c_app harp_sync
-                      hardware_divider pico_stdlib uart_nonblocking hardware_dma)
+                      hardware_divider pico_stdlib uart_nonblocking pio_uart
+                      hardware_pio hardware_dma soft_uart)
 
 target_link_libraries(${PROJECT_NAME} harp_core harp_c_app harp_sync pico_stdlib
-                      hardware_dma hardware_timer uart_nonblocking
+                      hardware_dma hardware_timer uart_nonblocking pio_uart
                       white_rabbit_app)
 
 pico_add_extra_outputs(${PROJECT_NAME})
