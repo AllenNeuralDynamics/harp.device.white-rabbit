@@ -7,6 +7,8 @@ add_definitions(-DGIT_HASH="${COMMIT_ID}") # Usable in source code.
 
 #add_definitions(-DDEBUG) # Uncomment for debugging
 
+add_definitions(-DUSBD_MANUFACTURER="Allen Institute")
+add_definitions(-DUSBD_PRODUCT="white-rabbit")
 
 #set(PICO_PLATFORM rp2040) # rp2040 is the default.
 
