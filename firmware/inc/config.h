@@ -2,13 +2,13 @@
 #define CONFIG_H
 
 
-#define HW_VERSION_MAJOR (0)
-#define HW_VERSION_MINOR (1)
+#define HW_VERSION_MAJOR (1)
+#define HW_VERSION_MINOR (0)
 #define HW_VERSION_PATCH (0)
 
 #define FW_VERSION_MAJOR (0)
 #define FW_VERSION_MINOR (1)
-#define FW_VERSION_PATCH (2)
+#define FW_VERSION_PATCH (4)
 
 
 #define HARP_CORE_LED_PIN (25)

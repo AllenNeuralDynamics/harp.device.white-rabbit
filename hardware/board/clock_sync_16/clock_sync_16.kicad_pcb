@@ -599,7 +599,7 @@
 			)
 		)
 		(property "Footprint" "kicad_component_library:DFN-8_3x2mm_P0.5mm"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "4b102a98-ada1-4a5c-a313-6d54f7c4fb3c")
@@ -611,7 +611,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/iso6521.pdf?ts=1710940335793&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FISO6521"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "342e63bd-ef08-45cb-891e-75df494b3a26")
@@ -623,7 +623,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "2ab9b528-0289-4dd1-8153-852ada31b76a")
@@ -870,6 +870,17 @@
 			(uuid "073b0169-549d-4648-a191-ea16b6f2fc95")
 		)
 		(model "${KICAD7_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/DFN-8-1EP_3x2mm_P0.5mm_EP1.3x1.5mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -2727,6 +2738,17 @@
 				(xyz 0 0 0)
 			)
 		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Diode_SMD:D_0402_1005Metric"
 		(layer "F.Cu")
@@ -3311,7 +3333,7 @@
 			)
 		)
 		(property "Footprint" "kicad_component_library:DFN-8_3x2mm_P0.5mm"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "b51301b1-b483-4c7f-ae6e-b4b2accaec72")
@@ -3323,7 +3345,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/iso6521.pdf?ts=1710940335793&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FISO6521"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "2127ff03-b23d-4f6d-b56c-6fd94cabee96")
@@ -3335,7 +3357,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "952cbed2-9073-4dd5-8817-d18e3e295876")
@@ -3581,6 +3603,17 @@
 			(uuid "7971ea3a-1083-42a0-bc36-32bb8573c7bb")
 		)
 		(model "${KICAD7_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/DFN-8-1EP_3x2mm_P0.5mm_EP1.3x1.5mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -5695,6 +5728,17 @@
 			(uuid "3ae03520-d64b-4bcd-92d5-b56d81d88d5e")
 		)
 		(model "${KICAD7_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/DFN-8-1EP_3x2mm_P0.5mm_EP1.3x1.5mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -14163,6 +14207,17 @@
 				(xyz 0 0 0)
 			)
 		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Diode_SMD:D_0402_1005Metric"
 		(layer "F.Cu")
@@ -20242,6 +20297,17 @@
 				(xyz 0 0 0)
 			)
 		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Diode_SMD:D_0402_1005Metric"
 		(layer "F.Cu")
@@ -22914,7 +22980,7 @@
 			)
 		)
 		(property "Footprint" "kicad_component_library:DFN-8_3x2mm_P0.5mm"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6f77c4bf-a2eb-4560-907d-3105ba0d3cab")
@@ -22926,7 +22992,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/iso6521.pdf?ts=1710940335793&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FISO6521"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "06ce5b20-f74e-4d10-955d-2f3130f2b68a")
@@ -22938,7 +23004,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "2172bece-c012-441d-8543-36e02bb6a842")
@@ -23184,6 +23250,17 @@
 			(uuid "15decebe-8dab-45de-8bbd-74a24ff1ba79")
 		)
 		(model "${KICAD7_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/DFN-8-1EP_3x2mm_P0.5mm_EP1.3x1.5mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -24357,7 +24434,7 @@
 			)
 		)
 		(property "Footprint" "kicad_component_library:DFN-8_3x2mm_P0.5mm"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6dfeeca4-6663-4985-99f5-23eb157c34fd")
@@ -24369,7 +24446,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/iso6521.pdf?ts=1710940335793&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FISO6521"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "c08d7b78-e83a-4750-b5cb-713ba3917660")
@@ -24381,7 +24458,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "c0ef4c36-dd58-4299-84fa-518ddf262693")
@@ -24627,6 +24704,17 @@
 			(uuid "d7058cbf-7326-4269-8878-210e93b3c15b")
 		)
 		(model "${KICAD7_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/DFN-8-1EP_3x2mm_P0.5mm_EP1.3x1.5mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -27563,6 +27651,17 @@
 				(xyz 0 0 0)
 			)
 		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
@@ -29761,6 +29860,17 @@
 			(uuid "030e3218-ef3d-4abd-a058-171c54e2dc10")
 		)
 		(model "${KICAD7_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/DFN-8-1EP_3x2mm_P0.5mm_EP1.3x1.5mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -32437,7 +32547,7 @@
 			)
 		)
 		(property "Footprint" "kicad_component_library:DFN-8_3x2mm_P0.5mm"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "7a4fc4d2-4b5e-4f3f-bde4-bbc0db2de6a9")
@@ -32449,7 +32559,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/iso6521.pdf?ts=1710940335793&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FISO6521"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "5933978b-1873-4240-b5a2-e1fc499d609c")
@@ -32461,7 +32571,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "1d9b285c-00dc-4ff8-8e4f-b75865bd3857")
@@ -32708,6 +32818,17 @@
 			(uuid "3facbfe9-1c6f-4c11-8708-e8b3b62c127c")
 		)
 		(model "${KICAD7_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/DFN-8-1EP_3x2mm_P0.5mm_EP1.3x1.5mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -37089,7 +37210,7 @@
 			)
 		)
 		(property "Footprint" "kicad_component_library:DFN-8_3x2mm_P0.5mm"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "94f888b1-9348-42ec-8f4d-e0fcc90f85b5")
@@ -37101,7 +37222,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/iso6521.pdf?ts=1710940335793&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FISO6521"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "4c77ade3-92b0-4e6c-a853-48d98b82e10c")
@@ -37113,7 +37234,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "ce8023cb-6039-4d2d-9ae9-f060158d977a")
@@ -37359,6 +37480,17 @@
 			(uuid "700fed78-9c91-4717-aa15-36d6a03a5613")
 		)
 		(model "${KICAD7_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/DFN-8-1EP_3x2mm_P0.5mm_EP1.3x1.5mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -37917,6 +38049,17 @@
 			(uuid "c2880e59-bdea-4d84-8e4c-16b52a4a2f51")
 		)
 		(model "${KICAD7_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/DFN-8-1EP_3x2mm_P0.5mm_EP1.3x1.5mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -40587,7 +40730,7 @@
 			)
 		)
 		(property "Footprint" "kicad_component_library:DFN-8_3x2mm_P0.5mm"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "a0587680-0a48-4428-9f87-8f30a7f4f210")
@@ -40599,7 +40742,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/iso6521.pdf?ts=1710940335793&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FISO6521"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "964ec1f7-6c58-4386-bb8a-596c264832ea")
@@ -40611,7 +40754,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "a8da5543-7f0a-4983-8dcf-51c42c641aaf")
@@ -40858,6 +41001,17 @@
 			(uuid "0454bd8c-c673-4098-9644-d0aa961f5ab2")
 		)
 		(model "${KICAD7_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/DFN-8-1EP_3x2mm_P0.5mm_EP1.3x1.5mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -45812,7 +45966,7 @@
 			)
 		)
 		(property "Footprint" "kicad_component_library:DFN-8_3x2mm_P0.5mm"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6dc909d7-8108-452b-8a91-f09ea8967a37")
@@ -45824,7 +45978,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/iso6521.pdf?ts=1710940335793&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FISO6521"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "0010e0ee-e4bd-4a79-9c06-ba0f16e94e51")
@@ -45836,7 +45990,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6e2c010f-3cb4-41c6-b836-942a951c86c7")
@@ -46083,6 +46237,17 @@
 			(uuid "4b01b607-94b6-4962-99bd-045e2f3c3a1e")
 		)
 		(model "${KICAD7_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/DFN-8-1EP_3x2mm_P0.5mm_EP1.3x1.5mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -46404,6 +46569,17 @@
 				(xyz 0 0 0)
 			)
 		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "kicad_component_library:DFN-8_3x2mm_P0.5mm"
 		(layer "F.Cu")
@@ -46435,7 +46611,7 @@
 			)
 		)
 		(property "Footprint" "kicad_component_library:DFN-8_3x2mm_P0.5mm"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "208c1f0e-e227-4ecf-82e2-4ad052a3ab25")
@@ -46447,7 +46623,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/iso6521.pdf?ts=1710940335793&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FISO6521"
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "95c3b8c6-c6d6-4938-bf75-ffee30a08f18")
@@ -46459,7 +46635,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 -90)
+			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "e04a9b12-1260-45e0-b03d-3bf78ffd959c")
@@ -46705,6 +46881,17 @@
 			(uuid "c64ed678-49ca-441f-a7cf-5a18667d23c8")
 		)
 		(model "${KICAD7_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/DFN-8-1EP_3x2mm_P0.5mm_EP1.3x1.5mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "/home/poofjunior/projects/kicad_libraries/kicad-lib/kicad-lib.3dshapes/TexasInstruments_8-TFDFN.stp"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -52276,7 +52463,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "V0.1.1"
+	(gr_text "0361-E-001"
 		(at 169.2 41.6 0)
 		(layer "F.SilkS")
 		(uuid "4410d758-796a-44cb-99c6-b5b771bee424")
@@ -52480,7 +52667,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "Aug 16, 2024"
+	(gr_text "Feb 21, 2025"
 		(at 169.1 42.75 0)
 		(layer "F.SilkS")
 		(uuid "d41937d4-3ef9-40b2-9dc7-cfb53e14b713")

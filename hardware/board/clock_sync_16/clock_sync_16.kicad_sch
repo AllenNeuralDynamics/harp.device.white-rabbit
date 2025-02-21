@@ -5,7 +5,9 @@
 	(uuid "8fe3245e-7a82-4862-8bfd-ddbb03ffdc18")
 	(paper "A4")
 	(title_block
-		(rev "0.1")
+		(title "harp.device.white-rabbit")
+		(date "2025-02-21")
+		(rev "1.0.0")
 		(company "The Allen Institute")
 	)
 	(lib_symbols
@@ -536,7 +538,7 @@
 	)
 	(wire
 		(pts
-			(xy 140.335 189.23) (xy 140.335 190.5)
+			(xy 162.56 189.23) (xy 162.56 190.5)
 		)
 		(stroke
 			(width 0)
@@ -736,7 +738,7 @@
 	)
 	(wire
 		(pts
-			(xy 140.335 180.34) (xy 140.335 181.61)
+			(xy 162.56 180.34) (xy 162.56 181.61)
 		)
 		(stroke
 			(width 0)
@@ -806,7 +808,7 @@
 	)
 	(text "Buffer Bypass Cap"
 		(exclude_from_sim no)
-		(at 133.35 173.355 0)
+		(at 154.94 172.72 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -839,7 +841,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 140.335 185.42 0)
+		(at 162.56 185.42 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -847,7 +849,7 @@
 		(dnp no)
 		(uuid "0e931603-5c1d-4850-a2f5-936607c8e81b")
 		(property "Reference" "C54"
-			(at 140.335 182.88 0)
+			(at 162.56 182.88 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -856,7 +858,7 @@
 			)
 		)
 		(property "Value" "1uF"
-			(at 141.605 187.96 0)
+			(at 163.83 187.96 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -865,7 +867,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 141.3002 189.23 0)
+			(at 163.5252 189.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -874,7 +876,7 @@
 			)
 		)
 		(property "Datasheet" "https://search.murata.co.jp/Ceramy/image/img/A01X/G101/ENG/GRM155R6YA105KE11-01.pdf"
-			(at 140.335 185.42 0)
+			(at 162.56 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -883,7 +885,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 140.335 185.42 0)
+			(at 162.56 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -892,7 +894,7 @@
 			)
 		)
 		(property "Notes" "must not be polarized"
-			(at 140.335 185.42 0)
+			(at 162.56 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -901,7 +903,7 @@
 			)
 		)
 		(property "Link" "https://www.digikey.com/en/products/detail/murata-electronics/GRM155R6YA105KE11J/4905163"
-			(at 140.335 185.42 0)
+			(at 162.56 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -910,7 +912,7 @@
 			)
 		)
 		(property "Manufacturer Number" "GRM155R6YA105KE11J"
-			(at 140.335 185.42 0)
+			(at 162.56 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -919,7 +921,7 @@
 			)
 		)
 		(property "Manufacturer" "Murata Electronics"
-			(at 140.335 185.42 0)
+			(at 162.56 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -928,7 +930,7 @@
 			)
 		)
 		(property "Rated Voltage" "35V"
-			(at 140.335 185.42 0)
+			(at 162.56 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -937,7 +939,7 @@
 			)
 		)
 		(property "Temperature Coefficient" "X5R"
-			(at 140.335 185.42 0)
+			(at 162.56 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -946,7 +948,7 @@
 			)
 		)
 		(property "PCBWay Link" ""
-			(at 140.335 185.42 0)
+			(at 162.56 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -977,7 +979,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 140.335 180.34 0)
+		(at 162.56 180.34 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -985,7 +987,7 @@
 		(dnp no)
 		(uuid "1810216e-3c80-4544-b70a-a3f85932123f")
 		(property "Reference" "#PWR037"
-			(at 140.335 184.15 0)
+			(at 162.56 184.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -994,7 +996,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 140.335 176.53 0)
+			(at 162.56 176.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1002,7 +1004,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 140.335 180.34 0)
+			(at 162.56 180.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1011,7 +1013,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 140.335 180.34 0)
+			(at 162.56 180.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1020,7 +1022,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 140.335 180.34 0)
+			(at 162.56 180.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1145,7 +1147,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 140.335 190.5 0)
+		(at 162.56 190.5 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1153,7 +1155,7 @@
 		(dnp no)
 		(uuid "75255714-b418-413a-a8bb-48793f680b3c")
 		(property "Reference" "#PWR058"
-			(at 140.335 196.85 0)
+			(at 162.56 196.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1162,7 +1164,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 140.335 194.31 0)
+			(at 162.56 194.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1170,7 +1172,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 140.335 190.5 0)
+			(at 162.56 190.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1179,7 +1181,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 140.335 190.5 0)
+			(at 162.56 190.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1188,7 +1190,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 140.335 190.5 0)
+			(at 162.56 190.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)

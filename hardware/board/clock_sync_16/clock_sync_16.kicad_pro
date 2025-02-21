@@ -525,7 +525,7 @@
       "plot": "exports/white_rabbit_v0.1.1/gerbers/",
       "pos_files": "exports/white_rabbit_v0.1.1/",
       "specctra_dsn": "",
-      "step": "../../enclosure/cads/step/white_rabbit_v0.1.0.step",
+      "step": "../../enclosure/cads/step/white_rabbit_v0.1.1.step",
       "svg": "",
       "vrml": ""
     },

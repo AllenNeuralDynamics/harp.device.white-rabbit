@@ -5,7 +5,9 @@
 	(uuid "3124e644-2604-4bdb-badb-4438b3cb0f1e")
 	(paper "A4")
 	(title_block
-		(rev "0.1")
+		(title "harp.device.white-rabbit")
+		(date "2025-02-21")
+		(rev "1.0.0")
 		(company "The Allen Institute")
 	)
 	(lib_symbols
@@ -11711,7 +11713,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.onsemi.com/pdf/datasheet/esd7571-d.pdf"
+		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD5V0F1BLD.pdf"
 			(at 74.93 155.575 0)
 			(effects
 				(font
@@ -11729,7 +11731,7 @@
 				(hide yes)
 			)
 		)
-		(property "Link" "https://www.digikey.com/en/products/detail/onsemi/ESD7571N2T5G/7220690"
+		(property "Link" "https://www.digikey.com/en/products/detail/nexperia-usa-inc/PESD5V0F1BLD-315/3679473"
 			(at 74.93 155.575 0)
 			(effects
 				(font
@@ -11747,7 +11749,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer Number" "ESD7571N2T5G"
+		(property "Manufacturer Number" "PESD5V0F1BLD,315"
 			(at 74.93 155.575 0)
 			(effects
 				(font
@@ -15250,7 +15252,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.onsemi.com/pdf/datasheet/esd7571-d.pdf"
+		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD5V0F1BLD.pdf"
 			(at 28.575 99.06 0)
 			(effects
 				(font
@@ -15268,7 +15270,7 @@
 				(hide yes)
 			)
 		)
-		(property "Link" "https://www.digikey.com/en/products/detail/onsemi/ESD7571N2T5G/7220690"
+		(property "Link" "https://www.digikey.com/en/products/detail/nexperia-usa-inc/PESD5V0F1BLD-315/3679473"
 			(at 28.575 99.06 0)
 			(effects
 				(font
@@ -15286,7 +15288,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer Number" "ESD7571N2T5G"
+		(property "Manufacturer Number" "PESD5V0F1BLD,315"
 			(at 28.575 99.06 0)
 			(effects
 				(font
@@ -16836,7 +16838,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.onsemi.com/pdf/datasheet/esd7571-d.pdf"
+		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD5V0F1BLD.pdf"
 			(at 82.55 59.055 0)
 			(effects
 				(font
@@ -16854,7 +16856,7 @@
 				(hide yes)
 			)
 		)
-		(property "Link" "https://www.digikey.com/en/products/detail/onsemi/ESD7571N2T5G/7220690"
+		(property "Link" "https://www.digikey.com/en/products/detail/nexperia-usa-inc/PESD5V0F1BLD-315/3679473"
 			(at 82.55 59.055 0)
 			(effects
 				(font
@@ -16872,7 +16874,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer Number" "ESD7571N2T5G"
+		(property "Manufacturer Number" "PESD5V0F1BLD,315"
 			(at 82.55 59.055 0)
 			(effects
 				(font
