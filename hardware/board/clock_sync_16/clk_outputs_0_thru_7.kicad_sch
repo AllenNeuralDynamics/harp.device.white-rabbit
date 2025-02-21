@@ -5778,7 +5778,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Nexperia USA Inc."
 			(at 104.775 151.13 0)
 			(effects
 				(font
@@ -8785,7 +8785,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Nexperia USA Inc."
 			(at 247.015 80.645 0)
 			(effects
 				(font
@@ -9398,7 +9398,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Nexperia USA Inc."
 			(at 104.775 44.45 0)
 			(effects
 				(font
@@ -10739,7 +10739,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Nexperia USA Inc."
 			(at 247.015 116.205 0)
 			(effects
 				(font
@@ -11553,7 +11553,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Nexperia USA Inc."
 			(at 104.775 115.57 0)
 			(effects
 				(font
@@ -11864,7 +11864,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Nexperia USA Inc."
 			(at 247.015 151.765 0)
 			(effects
 				(font
@@ -13162,7 +13162,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Nexperia USA Inc."
 			(at 104.775 80.01 0)
 			(effects
 				(font
@@ -13693,7 +13693,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Nexperia USA Inc."
 			(at 247.015 44.45 0)
 			(effects
 				(font
