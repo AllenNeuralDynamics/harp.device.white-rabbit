@@ -31,6 +31,9 @@ Error from the nominal Harp time is < 3[us].
 
 This feature is available on the AUX Port (3-pin terminal block), and the baud rate is configurable via Harp Protocol (U32 in Register 36).
 
+## PCBA Enclosure
+For the enclosure design, see the companion [OnShape project](https://cad.onshape.com/documents/e58143a7c9dd2652647e9623/w/90e72faf89a0a2a445ca0911/e/b03806c0bc46a31dc8d5c2c5?renderMode=0&uiState=67be1ef78ee27a5b150b11dd).
+
 ## Developer Notes
 In the firmware's **CMakeLists.txt**, adding (or uncommenting) the debug message below:
 ````cmake
