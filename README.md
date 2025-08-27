@@ -11,6 +11,16 @@ This device can serve as a drop-in replacement for the [Harp-Tech Clock Synchron
 * serial output of the time at user-specifiable baud-rate
 * "Used channel detection." Device can identify which channels are in use.
 
+## Ordering ➡ 💸
+You can now order V1.0.0 from PCBWay:
+* [white-rabbit board](https://www.pcbway.com/project/shareproject/W777629ASS64_W777629ASS46_white_rabbit_v1_0_0_gerbers_1c23dd35.html). Select **PCB + Assembly**
+
+These printed circuit boards are made on-demand.
+
+You will also need:
+* [3D Printed Enclosure Walls and Laser Cut Lids](https://cad.onshape.com/documents/e58143a7c9dd2652647e9623/w/90e72faf89a0a2a445ca0911/e/b03806c0bc46a31dc8d5c2c5?renderMode=0&uiState=68af55bb7a7888239c9b7788)
+  * right click the component to export each part.
+
 ## Auxiliary Output
 This device features an auxiliary output that can either produce a *pulse-per-second* (PPS) or UART message at the start of the whole second.
 This external signa enables Harp devices to additionally further synchronize with *non*-Harp devices.
