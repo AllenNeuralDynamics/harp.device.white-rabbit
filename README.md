@@ -7,8 +7,9 @@ This device can serve as a drop-in replacement for the [Harp-Tech Clock Synchron
 ## Features
 * 16 output channels for distributing clocks to other devices
 * 1 input channel for receiving and synchronizing to another clock source
-* PPS output
-* serial output of the time at user-specifiable baud-rate
+* 1 Additional Auxiliary Output, providing one of the following at a time:
+  * PPS output
+  * serial output of the time at user-specifiable baud-rate
 * "Used channel detection." Device can identify which channels are in use.
 
 ## Ordering ➡ 💸
