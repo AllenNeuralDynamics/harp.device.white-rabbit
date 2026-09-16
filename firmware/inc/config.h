@@ -4,7 +4,7 @@
 #include "core_registers.h" // for semver_t
 
 inline constexpr semver_t HW_VERSION = {1, 0, 0};
-inline constexpr semver_t FW_VERSION = {0, 1, 4};
+inline constexpr semver_t FW_VERSION = {0, 2, 0};
 
 inline constexpr uint32_t HARP_CORE_LED_PIN = 25;
 
