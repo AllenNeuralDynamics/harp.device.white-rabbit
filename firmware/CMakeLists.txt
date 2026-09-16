@@ -1,8 +1,20 @@
 cmake_minimum_required(VERSION 3.13)
 find_package(Git REQUIRED)
+# Generate Git Hash
 execute_process(COMMAND "${GIT_EXECUTABLE}" rev-parse --short HEAD OUTPUT_VARIABLE COMMIT_ID OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "Computed Git Hash: ${COMMIT_ID}")
-add_definitions(-DGIT_HASH="${COMMIT_ID}") # Usable in source code.
+add_definitions(-DGIT_HASH="${COMMIT_ID}")
+# Generate device.yml interface hash
+file(SHA1 "../../device.yml" INTERFACE_HASH_STR)
+set(BYTE_ARRAY "")
+string(LENGTH "${INTERFACE_HASH_STR}" HEX_LEN)
+math(EXPR LOOP_MAX "${HEX_LEN} - 1")
+foreach(I RANGE 0 ${LOOP_MAX} 2)
+    string(SUBSTRING "${INTERFACE_HASH_STR}" ${I} 2 HEX_BYTE)
+    list(APPEND BYTE_ARRAY "0x${HEX_BYTE}")
+endforeach()
+string(JOIN ", " INTERFACE_HASH ${BYTE_ARRAY})
+message(STATUS "Device Interface SHA-1 Hash: ${INTERFACE_HASH_STR}")
 
 
 #add_definitions(-DDEBUG) # Uncomment for debugging
@@ -16,7 +28,7 @@ add_definitions(-DUSBD_PRODUCT="white-rabbit")
 include(${PICO_SDK_PATH}/pico_sdk_init.cmake)
 
 # Use modern conventions like std::invoke
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 # Enable try/catch exception interface.
 #set(PICO_CXX_ENABLE_EXCEPTIONS 1)
 
@@ -26,7 +38,7 @@ project(white_rabbit)
 
 pico_sdk_init()
 
-add_subdirectory(lib/harp.core.rp2040/firmware) # Path to harp.core.rp2040.
+add_subdirectory(lib/core.pico/firmware) # Path to harp.core.rp2040.
 add_subdirectory(lib/pico.async-uart) # Path to uart_nonblocking and soft_uart
 
 add_library(white_rabbit_app
@@ -35,6 +47,10 @@ add_library(white_rabbit_app
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
+)
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    "INTERFACE_HASH={${INTERFACE_HASH}}"
 )
 
 include_directories(inc)
@@ -55,4 +71,3 @@ if(DEBUG)
     pico_enable_stdio_uart(${PROJECT_NAME} 1) # UART stdio for printf.
     # Additional libraries need to have stdio init also.
 endif()
-

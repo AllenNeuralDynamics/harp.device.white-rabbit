@@ -12,6 +12,7 @@
 #include <uart_nonblocking.h>
 #include <soft_uart.h>
 #include <core_registers.h>
+#include "reg_spec.h"
 #include <pico/divider.h> // for fast hardware division.
 #ifdef DEBUG
     #include <stdio.h>
@@ -31,7 +32,9 @@ extern const uint8_t fw_version_minor;
 extern const uint16_t serial_number;
 
 // Setup for Harp App
-const size_t REG_COUNT{5};
+extern const size_t APP_REG_COUNT;
+extern RegSpec app_reg_specs[];
+
 
 // pre-computed value for when to emit periodic counter msgs.
 extern uint32_t counter_interval_us;
@@ -65,8 +68,6 @@ struct app_regs_t
 // Note: literals, arrays, and functions accessed inside interrupt are placed in
 //  RAM to avoid delay associated with flash access.
 extern app_regs_t app_regs;
-extern RegSpecs app_reg_specs[REG_COUNT];
-extern RegFnPair reg_handler_fns[REG_COUNT];
 
 // Harp CLKout Double Buffer Setup
 extern volatile int harp_clkout_dma_chan;

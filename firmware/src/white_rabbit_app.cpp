@@ -1,4 +1,4 @@
-#include <white_rabbit_app.h>
+#include "white_rabbit_app.h"
 
 // Apply starting values.
 uint32_t counter_interval_us = 0;
@@ -6,6 +6,24 @@ uint64_t last_msg_emit_time_us;
 bool was_synced = false;
 
 app_regs_t app_regs;
+
+// Define "specs" per-register
+RegSpec app_reg_specs[]
+{
+    RegSpec::U16(&app_regs.ConnectedDevices,
+        HarpCore::read_reg_generic, HarpCore::write_reg_generic), // 32
+    RegSpec::U32(&app_regs.Counter,
+        HarpCore::read_reg_generic, HarpCore::write_reg_generic), // 33
+    RegSpec::U16(&app_regs.CounterFrequencyHz,
+       HarpCore::read_reg_generic, write_counter_frequency_hz),
+    RegSpec::U8(&app_regs.AuxPortFn,
+        HarpCore::read_reg_generic, write_aux_port_fn),
+    RegSpec::U32(&app_regs.AuxBaudRate,
+        HarpCore::read_reg_generic, write_aux_baud_rate),
+    // More specs here if we add additional registers.
+};
+
+const size_t APP_REG_COUNT = std::size(app_reg_specs);
 
 // Harp CLKout Double Buffer Setup
 volatile int __not_in_flash("double_buffers") harp_clkout_dma_chan = -1;
@@ -425,7 +443,7 @@ void update_app_state()
     // If port state changed, dispatch event from ConnectedDevices app reg (32).
     // TODO: add hysteresis.
     if ((old_port_raw != app_regs.ConnectedDevices) && !HarpCore::is_muted())
-        HarpCore::send_harp_reply(EVENT, APP_REG_START_ADDRESS);
+        HarpCore::send_harp_reply(EVENT, HarpCore::APP_REG_START_ADDRESS);
 
     // Nothing to do if we're not instructed to emit periodic msgs.
     if (app_regs.CounterFrequencyHz == 0)
@@ -446,7 +464,7 @@ void update_app_state()
         app_regs.Counter += 1;
         // Issue EVENT from Counter register.
         if (!HarpCore::is_muted())
-            HarpCore::send_harp_reply(EVENT, APP_REG_START_ADDRESS + 1);
+            HarpCore::send_harp_reply(EVENT, HarpCore::APP_REG_START_ADDRESS + 1);
     }
 }
 
@@ -475,25 +493,3 @@ void reset_app()
     setup_aux_clkout(); // Start with AUX CLKout fn enabled.
 #endif
 }
-
-// Define "specs" per-register
-RegSpecs app_reg_specs[REG_COUNT]
-{
-    {(uint8_t*)&app_regs.ConnectedDevices, sizeof(app_regs.ConnectedDevices), U16}, // 32
-    {(uint8_t*)&app_regs.Counter, sizeof(app_regs.Counter), U32}, // 33
-    {(uint8_t*)&app_regs.CounterFrequencyHz, sizeof(app_regs.CounterFrequencyHz), U16}, // 34
-    {(uint8_t*)&app_regs.AuxPortFn, sizeof(app_regs.AuxPortFn), U8}, // 35
-    {(uint8_t*)&app_regs.AuxBaudRate, sizeof(app_regs.AuxBaudRate), U32}, // 36
-    // More specs here if we add additional registers.
-};
-
-RegFnPair reg_handler_fns[REG_COUNT]
-{
-    {HarpCore::read_reg_generic, HarpCore::write_reg_generic},          // 32
-    {HarpCore::read_reg_generic, HarpCore::write_reg_generic},          // 33
-    {HarpCore::read_reg_generic, write_counter_frequency_hz},           // 34
-    {HarpCore::read_reg_generic, write_aux_port_fn},                    // 35
-    {HarpCore::read_reg_generic, write_aux_baud_rate},                  // 36
-    // More handler function pairs here if we add additional registers.
-};
-
