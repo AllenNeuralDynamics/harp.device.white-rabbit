@@ -303,10 +303,19 @@ void __not_in_flash_func(update_pps_output)()
     // Schedule next update.
     // Get the next whole harp time **half**-second.
     // Round down. i.e: integer-divide into half-second multiples and add 0.5s.
-    uint64_t next_msg_harp_time_us =
 #if defined(PICO_RP2040)
+    // Note: div_u64u64() uses the RP2040's shared hardware divider, which is
+    // also used by the main loop (e.g. HarpCore::set_timestamp_regs()). Since
+    // this fast divider call does not save/restore divider state on its own,
+    // we must do so here since this function runs in an interrupt context and
+    // can otherwise clobber an in-progress division on the main loop.
+    hw_divider_state_t divider_state;
+    hw_divider_save_state(&divider_state);
+    uint64_t next_msg_harp_time_us =
         div_u64u64(HarpCore::harp_time_us_64(), 500'000UL) * 500'000UL + 500'000UL;
+    hw_divider_restore_state(&divider_state);
 #else
+    uint64_t next_msg_harp_time_us =
         (HarpCore::harp_time_us_64() / 500'000UL) * 500'000UL + 500'000UL;
 #endif
     // Schedule next time msg dispatch in system time.
